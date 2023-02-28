@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33130.400
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "netcore-portfolio", "netcore-portfolio\netcore-portfolio.csproj", "{18071FD0-5F29-4F10-A523-EF388D5ACED6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{18071FD0-5F29-4F10-A523-EF388D5ACED6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18071FD0-5F29-4F10-A523-EF388D5ACED6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18071FD0-5F29-4F10-A523-EF388D5ACED6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18071FD0-5F29-4F10-A523-EF388D5ACED6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D1D269B6-ECB4-40A9-B1DE-25AB8A8AAFB4}
+	EndGlobalSection
+EndGlobal
