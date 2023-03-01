@@ -16,28 +16,28 @@ namespace mvcSqlImporter.Models
         }
 
         [Key]
-        public int pID { get; set; }
+        public int PID { get; set; }
 
-        public int? pCategoryID { get; set; }
-
-        [StringLength(50)]
-        public string pType { get; set; }
-
-        public string pLink { get; set; }
-
-        public string pImage { get; set; }
+        public int? PCategoryID { get; set; }
 
         [StringLength(50)]
-        public string pFactoryName { get; set; }
+        public string PType { get; set; }
+
+        public string PLink { get; set; }
+
+        public string PImage { get; set; }
 
         [StringLength(50)]
-        public string pDeliveryDate { get; set; }
+        public string PFactoryName { get; set; }
 
-        public string pUseService { get; set; }
+        [StringLength(50)]
+        public string PDeliveryDate { get; set; }
 
-        public string pDescription { get; set; }
+        public string PUseService { get; set; }
 
-        public string pTitle { get; set; }
+        public string PDescription { get; set; }
+
+        public string PTitle { get; set; }
 
         public virtual PortfolioCategory PortfolioCategory { get; set; }
 

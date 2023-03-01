@@ -18,28 +18,28 @@ namespace mvcSqlImporter.Models
         public int UserID { get; set; }
 
         [StringLength(50)]
-        public string name { get; set; }
+        public string Name { get; set; }
 
         [StringLength(50)]
-        public string surname { get; set; }
+        public string Surname { get; set; }
 
         [StringLength(150)]
-        public string title { get; set; }
+        public string Title { get; set; }
 
-        public string titleDescription { get; set; }
-
-        [StringLength(50)]
-        public string mail { get; set; }
+        public string TitleDescription { get; set; }
 
         [StringLength(50)]
-        public string phone { get; set; }
-
-        public string userImage { get; set; }
-
-        public string password { get; set; }
+        public string Mail { get; set; }
 
         [StringLength(50)]
-        public string location { get; set; }
+        public string Phone { get; set; }
+
+        public string UserImage { get; set; }
+
+        public string Password { get; set; }
+
+        [StringLength(50)]
+        public string Location { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Resume> Resume { get; set; }

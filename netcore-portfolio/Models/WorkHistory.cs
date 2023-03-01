@@ -9,24 +9,23 @@ namespace mvcSqlImporter.Models
     [Table("WorkHistory")]
     public partial class WorkHistory
     {
-        [Key]
-        public int whID { get; set; }
+        public int WorkHistoryID { get; set; }
 
-        public int? resumeID { get; set; }
-
-        [StringLength(50)]
-        public string startDate { get; set; }
+        public int? ResumeID { get; set; }
 
         [StringLength(50)]
-        public string finishDate { get; set; }
+        public string StartDate { get; set; }
+
+        [StringLength(50)]
+        public string FinishDate { get; set; }
 
         [StringLength(150)]
-        public string workTitle { get; set; }
+        public string WorkTitle { get; set; }
 
         [StringLength(150)]
-        public string companyName { get; set; }
+        public string CompanyName { get; set; }
 
-        public string workDescription { get; set; }
+        public string WorkDescription { get; set; }
 
         public virtual Resume Resume { get; set; }
     }

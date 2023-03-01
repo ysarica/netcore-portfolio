@@ -6,22 +6,23 @@ namespace mvcSqlImporter.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("PortfolioCategory")]
-    public partial class PortfolioCategory
+    [Table("BlogCategory")]
+    public partial class BlogCategory
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PortfolioCategory()
+        public BlogCategory()
         {
-            Portfolio = new HashSet<Portfolio>();
+            Blog = new HashSet<Blog>();
         }
 
-        [Key]
-        public int PCategoryID { get; set; }
+        public int BlogCategoryID { get; set; }
 
-        [StringLength(250)]
-        public string PCategoryName { get; set; }
+        [StringLength(150)]
+        public string BlogCategoryName { get; set; }
+
+        public bool? BlogCategoryState { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Portfolio> Portfolio { get; set; }
+        public virtual ICollection<Blog> Blog { get; set; }
     }
 }

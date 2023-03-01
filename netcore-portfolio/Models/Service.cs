@@ -9,14 +9,14 @@ namespace mvcSqlImporter.Models
     [Table("Service")]
     public partial class Service
     {
-        public int serviceID { get; set; }
+        public int ServiceID { get; set; }
 
-        public int? resumeID { get; set; }
+        public int? ResumeID { get; set; }
 
         [StringLength(150)]
-        public string serviceName { get; set; }
+        public string ServiceName { get; set; }
 
-        public string serviceDescription { get; set; }
+        public string ServiceDescription { get; set; }
 
         public virtual Resume Resume { get; set; }
     }

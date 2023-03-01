@@ -10,11 +10,11 @@ namespace mvcSqlImporter.Models
     public partial class PortfolioImage
     {
         [Key]
-        public int pImageID { get; set; }
+        public int PImageID { get; set; }
 
-        public string pImage { get; set; }
+        public string PImage { get; set; }
 
-        public int? pID { get; set; }
+        public int? PID { get; set; }
 
         public virtual Portfolio Portfolio { get; set; }
     }

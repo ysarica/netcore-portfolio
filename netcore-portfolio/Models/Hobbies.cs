@@ -9,14 +9,14 @@ namespace mvcSqlImporter.Models
     public partial class Hobbies
     {
         [Key]
-        public int hobbieID { get; set; }
+        public int HobbieID { get; set; }
 
-        public int? resumeID { get; set; }
+        public int? ResumeID { get; set; }
 
         [StringLength(150)]
-        public string hobbieName { get; set; }
+        public string HobbieName { get; set; }
 
-        public string hobbieImage { get; set; }
+        public string HobbieImage { get; set; }
 
         public virtual Resume Resume { get; set; }
     }

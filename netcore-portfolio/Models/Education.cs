@@ -9,21 +9,21 @@ namespace mvcSqlImporter.Models
     [Table("Education")]
     public partial class Education
     {
-        public int educationID { get; set; }
+        public int EducationID { get; set; }
 
-        public int? resumeID { get; set; }
-
-        [StringLength(50)]
-        public string startDate { get; set; }
+        public int? ResumeID { get; set; }
 
         [StringLength(50)]
-        public string finishDate { get; set; }
+        public string StartDate { get; set; }
 
-        public string educationBranch { get; set; }
+        [StringLength(50)]
+        public string FinishDate { get; set; }
 
-        public string schoolName { get; set; }
+        public string EducationBranch { get; set; }
 
-        public string educationDescription { get; set; }
+        public string SchoolName { get; set; }
+
+        public string EducationDescription { get; set; }
 
         public virtual Resume Resume { get; set; }
     }

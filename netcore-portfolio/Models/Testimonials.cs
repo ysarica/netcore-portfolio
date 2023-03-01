@@ -9,17 +9,17 @@ namespace mvcSqlImporter.Models
     public partial class Testimonials
     {
         [Key]
-        public int testimonialID { get; set; }
+        public int TestimonialID { get; set; }
 
-        public int? resumeID { get; set; }
-
-        [StringLength(250)]
-        public string tName { get; set; }
+        public int? ResumeID { get; set; }
 
         [StringLength(250)]
-        public string tCoımpany { get; set; }
+        public string TName { get; set; }
 
-        public string tDescription { get; set; }
+        [StringLength(250)]
+        public string TCoımpany { get; set; }
+
+        public string TDescription { get; set; }
 
         public virtual Resume Resume { get; set; }
     }

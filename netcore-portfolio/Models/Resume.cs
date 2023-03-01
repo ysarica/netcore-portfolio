@@ -21,29 +21,32 @@ namespace mvcSqlImporter.Models
             WorkProces = new HashSet<WorkProces>();
         }
 
-        public int resumeID { get; set; }
+        public int ResumeID { get; set; }
 
         public int? UserID { get; set; }
 
-        public string resumeImage { get; set; }
+        public string ResumeImage { get; set; }
 
-        public string resumeAbout { get; set; }
+        public string ResumeAbout { get; set; }
 
-        public string pdfCV { get; set; }
+        public string PdfCV { get; set; }
 
-        public bool? workState { get; set; }
+        public bool? WorkState { get; set; }
 
-        public bool? serviceState { get; set; }
+        public bool? ServiceState { get; set; }
 
-        public bool? workProccesState { get; set; }
+        public bool? WorkProccesState { get; set; }
 
-        public bool? workPartnersState { get; set; }
+        public bool? WorkPartnersState { get; set; }
 
-        public bool? hobbiesState { get; set; }
+        public bool? HobbiesState { get; set; }
 
-        public bool? workHistoryState { get; set; }
+        public bool? WorkHistoryState { get; set; }
 
-        public bool? educationState { get; set; }
+        public bool? EducationState { get; set; }
+
+        [StringLength(10)]
+        public string TestimonialState { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Education> Education { get; set; }

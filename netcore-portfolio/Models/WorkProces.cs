@@ -8,17 +8,16 @@ namespace mvcSqlImporter.Models
 
     public partial class WorkProces
     {
-        [Key]
-        public int wpID { get; set; }
+        public int WorkProcesID { get; set; }
 
-        public int? resumeID { get; set; }
+        public int? ResumeID { get; set; }
 
-        public int? wpOrder { get; set; }
+        public int? WpOrder { get; set; }
 
         [StringLength(150)]
-        public string wpName { get; set; }
+        public string WpName { get; set; }
 
-        public string wpImage { get; set; }
+        public string WpImage { get; set; }
 
         public virtual Resume Resume { get; set; }
     }
