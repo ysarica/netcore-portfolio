@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;    
 
 namespace netcore_portfolio.Models
 {
-    public class Context:DbContext
+    public class Context:IdentityDbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public Context(DbContextOptions<Context> options)
+       : base(options)
         {
-            optionsBuilder.UseSqlServer("server=DESKTOP-H96T0HB\\SQLEXPRESS;database=CorePortDB; integrated security=true;");
         }
         public  DbSet<Blog> Blog { get; set; }
         public  DbSet<BlogCategory> BlogCategory { get; set; }

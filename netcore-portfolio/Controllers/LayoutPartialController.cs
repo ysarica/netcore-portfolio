@@ -24,10 +24,6 @@ namespace netcore_portfolio.Controllers
         {
             return PartialView();
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
         public PartialViewResult _LayoutSocial()
         {
             return PartialView();
