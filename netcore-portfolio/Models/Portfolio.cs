@@ -1,15 +1,17 @@
-namespace mvcSqlImporter.Models
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
+namespace netcore_portfolio.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     [Table("Portfolio")]
     public partial class Portfolio
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Portfolio()
         {
             PortfolioImage = new HashSet<PortfolioImage>();
@@ -41,7 +43,6 @@ namespace mvcSqlImporter.Models
 
         public virtual PortfolioCategory PortfolioCategory { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PortfolioImage> PortfolioImage { get; set; }
     }
 }
