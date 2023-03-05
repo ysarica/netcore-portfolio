@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace netcore_portfolio.Models
 {
-    public class Context:IdentityDbContext
+    public class Context:IdentityDbContext<ApplicationUser>
     {
         public Context(DbContextOptions<Context> options)
        : base(options)
@@ -31,5 +31,6 @@ namespace netcore_portfolio.Models
         public  DbSet<WorkHistory> WorkHistory { get; set; }
         public  DbSet<WorkPartners> WorkPartners { get; set; }
         public  DbSet<WorkProces> WorkProces { get; set; }
+        public DbSet<SmtpConfigs> SmtpConfigs { get; set; }
     }
 }

@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using netcore_portfolio.Models;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using netcore_portfolio.Helpers;
 
 namespace netcore_portfolio
 {
@@ -28,10 +30,12 @@ namespace netcore_portfolio
         {
             services.AddControllersWithViews();
 
+            services.AddScoped<SmtpEmailSender>();
+
             services.AddDbContext<Context>(options =>
        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<Context>()
                 .AddDefaultTokenProviders();
 
@@ -58,7 +62,7 @@ namespace netcore_portfolio
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-                options.LoginPath = "/Account/Login"; // Set here the login path
+                options.LoginPath = "/Login/Index"; // Set here the login path
                 options.AccessDeniedPath = "/Account/AccessDenied"; // Set here the access denied path
                 options.SlidingExpiration = true;
             });
@@ -80,11 +84,11 @@ namespace netcore_portfolio
                 app.UseHsts();
             }
 
-        app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
