@@ -13,6 +13,7 @@ using netcore_portfolio.ViewModels;
 using netcore_portfolio.Helpers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 namespace netcore_portfolio.Controllers
 {
@@ -21,12 +22,16 @@ namespace netcore_portfolio.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly SmtpEmailSender _smtpEmailSender;
+        private readonly Context _context;
 
-        public LoginController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,SmtpEmailSender smtpEmailSender)
+
+        public LoginController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,SmtpEmailSender smtpEmailSender,Context context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _smtpEmailSender = smtpEmailSender;
+            _context = context;
+
         }
         public async Task<IActionResult> Logout()
         {
@@ -48,10 +53,11 @@ namespace netcore_portfolio.Controllers
             {
                 var user = await _userManager.FindByNameAsync(model.Email);
                 if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
-                {
+                {                  
                     await _signInManager.SignInAsync(user, model.RememberMe);
                     if (returnUrl == null)
                     {
+                        
                         return Redirect("/Admin/Index/");
                     }
                     else
@@ -80,11 +86,14 @@ namespace netcore_portfolio.Controllers
             if (userCount < 1)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                user.Name = "Bilinmiyor";
+                user.Surname = "bilinmiyor";
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("User", "Admin");
+                                       await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    return RedirectToAction("Index", "Admin");
                 }
                 foreach (var error in result.Errors)
                 {

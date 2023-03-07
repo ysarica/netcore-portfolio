@@ -26,9 +26,20 @@ namespace netcore_portfolio.Models
 
         public int ResumeID { get; set; }
 
-        public int? UserID { get; set; }
+        [StringLength(150)]
+        public string Title { get; set; }
+
+        public string TitleDescription { get; set; }
+
+        [StringLength(50)]
+        public string Mail { get; set; }
+
+        [StringLength(50)]
+        public string Phone { get; set; }
 
         public string ResumeImage { get; set; }
+        [StringLength(50)]
+        public string Location { get; set; }
 
         public string ResumeAbout { get; set; }
 
@@ -53,8 +64,6 @@ namespace netcore_portfolio.Models
         public virtual ICollection<Education> Education { get; set; }
 
         public virtual ICollection<Hobbies> Hobbies { get; set; }
-
-        public virtual User User { get; set; }
 
         public virtual ICollection<Service> Service { get; set; }
 

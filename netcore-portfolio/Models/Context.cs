@@ -26,7 +26,6 @@ namespace netcore_portfolio.Models
         public  DbSet<Service> Service { get; set; }
         public  DbSet<SocialAccounts> SocialAccounts { get; set; }
         public  DbSet<Testimonials> Testimonials { get; set; }
-        public  DbSet<User> User { get; set; }
         public  DbSet<WebsiteSettings> WebsiteSettings { get; set; }
         public  DbSet<WorkHistory> WorkHistory { get; set; }
         public  DbSet<WorkPartners> WorkPartners { get; set; }
