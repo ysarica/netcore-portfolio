@@ -31,9 +31,9 @@ namespace netcore_portfolio
             services.AddControllersWithViews();
 
             services.AddScoped<SmtpEmailSender>();
-
+           
             services.AddDbContext<Context>(options =>
-       options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<Context>()
@@ -66,7 +66,7 @@ namespace netcore_portfolio
                 options.AccessDeniedPath = "/Account/AccessDenied"; // Set here the access denied path
                 options.SlidingExpiration = true;
             });
-
+         
             services.AddMvc();
         }
 
@@ -83,7 +83,6 @@ namespace netcore_portfolio
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

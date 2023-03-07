@@ -5,7 +5,6 @@ using netcore_portfolio.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace netcore_portfolio.Controllers
@@ -24,12 +23,7 @@ namespace netcore_portfolio.Controllers
         }
         public IActionResult Index()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var user = _userManager.FindByIdAsync(userId).Result;
-
-            ViewBag.IM = user.UserImage;
-            ViewBag.KA = user.Name + " " + user.Surname;
+          
             return View();
         }
         [HttpPost]

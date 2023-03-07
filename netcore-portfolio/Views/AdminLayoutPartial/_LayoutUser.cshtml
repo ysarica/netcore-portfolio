@@ -1,16 +1,22 @@
-﻿@if (User.Identity.IsAuthenticated)
+﻿
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
 {
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-            <!-- Kullanılacak ViewData["UserPhoto"] --> 
-            <img src="@ViewBag.IM" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-            <a href="#" class="d-block">
-                @ViewBag.KA
-            </a>
-        </div>
-        <ul>
-        </ul>
-    </div>}
+    <div class="image">
+        <!-- Kullanılacak ViewData["UserPhoto"] -->
+        <img src="@UserManager.GetUserAsync(User).Result.UserImage" class="img-circle elevation-2" alt="User Image">
+    </div>
+    <div class="info">
+        <a href="#" class="d-block">
+          @UserManager.GetUserAsync(User).Result.Name  @UserManager.GetUserAsync(User).Result.Surname
+        </a>
+    </div>
 
+</div>
+   
+}

@@ -14,6 +14,7 @@ using netcore_portfolio.Helpers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace netcore_portfolio.Controllers
 {
@@ -55,6 +56,8 @@ namespace netcore_portfolio.Controllers
                 if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
                 {                  
                     await _signInManager.SignInAsync(user, model.RememberMe);
+
+             
                     if (returnUrl == null)
                     {
                         
