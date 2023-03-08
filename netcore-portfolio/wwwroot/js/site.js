@@ -1,4 +1,31 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿////$(document).ready(function () {
+////    $.ajax({
+////        type: 'GET',
+////        url: '/ResumeSettings/GetResume/',
+////        success: function (resume) {
+////            $('#title').val(resume.title);
+////            $('#phone').val(resume.phone);
+////            $('#resumeimage').attr('src', resume.resumeImage);
 
-// Write your JavaScript code.
+////        },
+////        error: function () {
+////            alert('Veriler yüklenirken hata oluştu.');
+////        }
+////    });
+////});
+
+function getResumeData() {
+    $.ajax({
+        type: 'GET',
+        url: '/ResumeSettings/GetResume/',
+        success: function (resume) {
+            $('#title').val(resume.title);
+            $('#phone').val(resume.phone);
+            $('#resumeimage').attr('src', resume.resumeImage);
+
+        },
+        error: function () {
+            alert('Veriler yüklenirken hata oluştu.');
+        }
+    });
+}

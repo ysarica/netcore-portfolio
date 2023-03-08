@@ -41,7 +41,7 @@
                 }
                 <p class="login-box-msg">Kullanıcı Bilgilerinizi Giriniz</p>
 
-                <form method="post" asp-controller="Login" asp-action="Index">
+                <form method="post" asp-controller="Login" asp-action="Index" asp-route-returnUrl="@ViewData["ReturnUrl"]">
                     <div class="input-group mb-3">
                         <input type="email" class="form-control" id="Email" name="Email" placeholder="Email">
                         <div class="input-group-append">
@@ -91,5 +91,8 @@
     <script src="/adminlte//plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="/adminlte/dist/js/adminlte.min.js"></script>
+
+
+
 </body>
 </html>

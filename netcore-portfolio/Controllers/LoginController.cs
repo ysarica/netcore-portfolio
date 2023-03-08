@@ -34,22 +34,23 @@ namespace netcore_portfolio.Controllers
             _context = context;
 
         }
+         
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Login");
         }
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string ReturnUrl=null)
         {
+            ViewData["ReturnUrl"] = ReturnUrl;
             return View();
         }
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Index(LoginViewModel model, string ReturnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByNameAsync(model.Email);
@@ -58,14 +59,14 @@ namespace netcore_portfolio.Controllers
                     await _signInManager.SignInAsync(user, model.RememberMe);
 
              
-                    if (returnUrl == null)
+                    if (ReturnUrl == null)
                     {
                         
                         return Redirect("/Admin/Index/");
                     }
                     else
                     {
-                        return Redirect(returnUrl);
+                        return Redirect(ReturnUrl);
                     }
                 }
                 ModelState.AddModelError(string.Empty, "Geçersiz oturum açma girişimi.");
