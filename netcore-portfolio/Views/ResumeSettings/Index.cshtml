@@ -8,9 +8,6 @@
 @section sitemap{ Özgeçmiş}
 
 
-<input type="text" id="title" name="title" />
-
-<input type="text" id="phone" name="phone" />
 @*<input type="text" id="resumeimage" name="resumeimage" />*@
 
 
@@ -25,51 +22,22 @@
                         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default">  <img id="resumeimage" name="resumeimage" class="profile-user-img img-fluid img-circle" @*src="/adminlte/dist/img/user4-128x128.jpg"*@ alt="User profile picture"></button>
                     </div>
                     <hr />
-
-
-
-
                     <button type="button" data-toggle="modal" data-target="#modal-default" class="btn btn-primary btn-block"><b>Resmi Değiştir</b></button>
                 </div>
                 <!-- /.card-body -->
             </div>
             <!-- /.card -->
             <!-- About Me Box -->
-            <div class="card card-primary">
+            <div class="card card-primary card-outline">
                 <div class="card-header">
-                    <h3 class="card-title">About Me</h3>
+                    <h3 class="card-title">Hazır CV</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <strong><i class="fas fa-book mr-1"></i> Education</strong>
+                    <button type="button" data-toggle="modal" data-target="#modal-default" class="btn btn-primary btn-block"><b>Cv İndir</b></button>
+                    <button type="button" data-toggle="modal" data-target="#modal-default" class="btn btn-primary btn-block"><b>Cv Görüntüle</b></button>
+                    <button type="button" data-toggle="modal" data-target="#modal-default" class="btn btn-primary btn-block"><b>Cv Güncelle</b></button>
 
-                    <p class="text-muted">
-                        B.S. in Computer Science from the University of Tennessee at Knoxville
-                    </p>
-
-                    <hr>
-
-                    <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
-
-                    <p class="text-muted">Malibu, California</p>
-
-                    <hr>
-
-                    <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
-
-                    <p class="text-muted">
-                        <span class="tag tag-danger">UI Design</span>
-                        <span class="tag tag-success">Coding</span>
-                        <span class="tag tag-info">Javascript</span>
-                        <span class="tag tag-warning">PHP</span>
-                        <span class="tag tag-primary">Node.js</span>
-                    </p>
-
-                    <hr>
-
-                    <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
-
-                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
                 </div>
                 <!-- /.card-body -->
             </div>
@@ -79,7 +47,7 @@
         <div class="col-md-9">
             <div class="card card-primary card-outline">
                 <div class="card-header">
-                    <h3 class="card-title">Collapsable</h3>
+                    <h3 class="card-title">Genel Bilgiler</h3>
 
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -90,7 +58,60 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    The body of the card
+                    <div class="row">
+                        <div class="col-md-6">
+
+                            <!--name-->
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">İsim</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="İsim Giriniz">
+                            </div>
+                            <!--Mail-->
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Mail</label>
+                                <input type="email" class="form-control" id="mail" name="mail" placeholder="Mail Giriniz">
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+
+                            <!--surname-->
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Soyisim</label>
+                                <input type="text" class="form-control" id="surname" name="surname" placeholder="Soyisim Giriniz">
+                            </div>
+                            <!--phone-->
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Telefon</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" placeholder="Telefon Giriniz">
+                            </div>
+
+                        </div>
+                        <div class="col-md-12">
+                            <!--location-->
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Lokasyon</label>
+                                <input type="text" class="form-control" id="location" name="location" placeholder="Lokasyon Giriniz">
+                            </div>
+                            <!--title-->
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Ünvan</label>
+                                <input type="text" class="form-control" id="title" name="title" placeholder="Ünvan Giriniz">
+                            </div>
+                            <!--titleDescription-->
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Özet Ünvan Açıklaması</label>
+                                <input type="text" class="form-control" id="titleDescription" name="titleDescription" placeholder="Kısa Bir Ünvan Açıklaması Giriniz">
+                            </div>
+                            <!--resumeAbout-->
+                            <div class="form-group">
+                                <label>Hakkınızda</label>
+                                <textarea class="form-control" rows="3" id="resumeAbout" name="resumeAbout" placeholder="Kendinizden Bahsedin"></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
                 <!-- /.card-body -->
             </div>
@@ -129,8 +150,14 @@
         type: 'GET',
         url: '/ResumeSettings/GetResume/',
         success: function (resume) {
+            $('#name').val(resume.name);
+            $('#surname').val(resume.surname);
+            $('#titleDescription').val(resume.titleDescription);
             $('#title').val(resume.title);
             $('#phone').val(resume.phone);
+            $('#mail').val(resume.mail);
+            $('#location').val(resume.location);
+            $('#resumeAbout').val(resume.resumeAbout);
             $('#resumeimage').attr('src', resume.resumeImage);
 
         },

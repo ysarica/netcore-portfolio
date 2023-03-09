@@ -28,6 +28,11 @@ namespace netcore_portfolio.Models
 
         [StringLength(150)]
         public string Title { get; set; }
+        [StringLength(50)]
+        public string Name { get; set; }
+
+        [StringLength(50)]
+        public string Surname { get; set; }
 
         public string TitleDescription { get; set; }
 
