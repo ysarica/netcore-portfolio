@@ -22,7 +22,7 @@
                         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default">  <img id="resumeimage" name="resumeimage" class="profile-user-img img-fluid img-circle" @*src="/adminlte/dist/img/user4-128x128.jpg"*@ alt="User profile picture"></button>
                     </div>
                     <hr />
-                    <button type="button" data-toggle="modal" data-target="#modal-default" class="btn btn-primary btn-block"><b>Resmi Değiştir</b></button>
+                    <button type="button" data-toggle="modal" data-target="#modal-imageResume" class="btn btn-primary btn-block"><b>Resmi Değiştir</b></button>
                 </div>
                 <!-- /.card-body -->
             </div>
@@ -36,7 +36,7 @@
                 <div class="card-body">
                     <a href="#" class="btn btn-primary btn-block"><b>Cv İndir</b></a>
                     <a href="#" class="btn btn-primary btn-block"><b>Cv Görüntüle</b></a>
-                    <button type="button" data-toggle="modal" data-target="#modal-default" class="btn btn-primary btn-block"><b>Cv Güncelle</b></button>
+                    <button type="button" data-toggle="modal" data-target="#modal-cv" class="btn btn-primary btn-block"><b>Cv Güncelle</b></button>
 
                 </div>
                 <!-- /.card-body -->
@@ -45,6 +45,7 @@
         </div>
 
         <div class="col-md-9">
+
             <div class="card card-primary card-outline">
                 <div class="card-header">
                     <h3 class="card-title">Genel Bilgiler</h3>
@@ -119,12 +120,32 @@
                 </div>
                 <!-- /.card-body -->
             </div>
+
+            <div class="card card-outline card-warning">
+                <div class="card-header">
+                    <h3 class="card-title">Sunduğunuz Hizmetler</h3>
+
+                    <div class="card-tools">
+                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-addService">Hizmet Ekle</button>
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.card-tools -->
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="row" id="service-cards">
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
         </div>
     </div>
 </div>
 
 <!--User Image Update Modal Start-->
-<div class="modal fade" id="modal-default">
+<div class="modal fade" id="modal-imageResume">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -160,10 +181,73 @@
     <!-- /.modal-dialog -->
 </div>
 <!--User Image Update Modal Finish-->
+<!--User CV Update Modal Start-->
+<div class="modal fade" id="modal-cv">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Özgeçmiş Resim Güncelle</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="exampleInputFile">cv Resim Güncelle</label>
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="resumeImage" name="resumeImage">
+                            <label class="custom-file-label" for="exampleInputFile">Resim Seçin</label>
+                        </div>
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fa fa-upload"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                <button type="button" id="saveResumeImage" class="btn btn-success">Resmi Kaydet</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!--User CV Update Modal Finish-->
+<!--User Service Add Modal Start-->
+<div class="modal fade" id="modal-addService">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Sundugunuz Hizmet Ekleme</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+               service add
+
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                <button type="button" id="addServiceButton" class="btn btn-success">Kaydet</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!--User Service Add Modal Finish-->
 <script src="~/js/ResumeSettings.js"></script>
 <script>
     $(document).ready(function () {
+       
         getResumeData();
     });
 </script>

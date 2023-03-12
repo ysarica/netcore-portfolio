@@ -21,6 +21,8 @@ namespace netcore_portfolio.Models
 
         public string ServiceDescription { get; set; }
 
+        public string ServiceImage { get; set; }
+
         public virtual Resume Resume { get; set; }
     }
 }

@@ -27,6 +27,20 @@ namespace netcore_portfolio.Controllers
             _userManager = userManager;
 
         }
+        private bool IsImage(IFormFile file)
+        {
+            if (file.ContentType.ToLower() != "image/jpg" &&
+                file.ContentType.ToLower() != "image/jpeg" &&
+                file.ContentType.ToLower() != "image/pjpeg" &&
+                file.ContentType.ToLower() != "image/gif" &&
+                file.ContentType.ToLower() != "image/x-png" &&
+                file.ContentType.ToLower() != "image/png")
+            {
+                return false;
+            }
+
+            return true;
+        }
         public IActionResult Index()
         {
             return View();
@@ -101,26 +115,14 @@ namespace netcore_portfolio.Controllers
             return Json(new { success = true });
         }
 
-        private bool IsImage(IFormFile file)
+        
+        public IActionResult GetService()
         {
-            if (file.ContentType.ToLower() != "image/jpg" &&
-                file.ContentType.ToLower() != "image/jpeg" &&
-                file.ContentType.ToLower() != "image/pjpeg" &&
-                file.ContentType.ToLower() != "image/gif" &&
-                file.ContentType.ToLower() != "image/x-png" &&
-                file.ContentType.ToLower() != "image/png")
-            {
-                return false;
-            }
+            var service = _context.Service.Where(x => x.ResumeID == 1).ToList();
 
-            return true;
+            return Json(service);
         }
-        public IActionResult GetEducation()
-        {
-            var user = _userManager.FindByEmailAsync(User.Identity.Name);
-
-            return Json(user.Result);
-        }
+     
 
     }
 }
