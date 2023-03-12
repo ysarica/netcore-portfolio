@@ -13,6 +13,7 @@
     <Folder Include="wwwroot\ikonik\images\portfolio\single\_notes\" />
     <Folder Include="wwwroot\ikonik\images\portfolio\_notes\" />
     <Folder Include="wwwroot\images\resume\" />
+    <Folder Include="wwwroot\docs\" />
   </ItemGroup>
 
   <ItemGroup>

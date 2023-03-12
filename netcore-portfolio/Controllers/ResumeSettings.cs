@@ -45,6 +45,11 @@ namespace netcore_portfolio.Controllers
         {
             return View();
         }
+        public IActionResult GetResume()
+        {
+            var resume = _context.Resume.FirstOrDefault(x => x.ResumeID == 1);
+            return Json(resume);
+        }
         [HttpPost]
         public async Task<JsonResult> UpdateResume(Resume model)
         {
@@ -70,12 +75,47 @@ namespace netcore_portfolio.Controllers
 
             return Json(new { success = true });
         }
-        public IActionResult GetResume()
-        {
-            var resume = _context.Resume.FirstOrDefault(x => x.ResumeID == 1);
-            return Json(resume);
-        }
 
+        public IActionResult UpdateResumeSwitcs(int id,bool value)
+        {
+            var resumeSwitch = _context.Resume.FirstOrDefault(x=> x.ResumeID==1);
+            if (id==1)//WorkState
+            {
+                resumeSwitch.WorkState = value;
+            }
+            else if (id == 2)
+            {
+                resumeSwitch.ServiceState = value;
+            }
+            else if (id==3)
+            {
+                resumeSwitch.WorkProccesState = value;
+            }
+            else if (id == 4)
+            {
+                resumeSwitch.WorkPartnersState = value;
+            }
+            else if (id == 5)
+            {
+                resumeSwitch.HobbiesState = value;
+            }
+            else if (id == 6)
+            {
+                resumeSwitch.WorkHistoryState = value;
+            }
+            else if (id ==7)
+            {
+                resumeSwitch.EducationState = value;
+            }
+            else if (id == 8)
+            {
+                resumeSwitch.TestimonialState = value;
+            }
+
+            _context.SaveChanges();
+
+            return Json(new { success = true });
+        }
         [HttpPost]
         public async Task<IActionResult> ResumeImageUpdate(IFormFile file)
         {
@@ -115,14 +155,81 @@ namespace netcore_portfolio.Controllers
             return Json(new { success = true });
         }
 
-        
+        [HttpPost]
+        public async Task<IActionResult> ResumeCvUpdate(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("Cv dosyası seçilmedi");
+
+            if (file.ContentType.ToLower() != "application/pdf")
+                return BadRequest("Cv dosyası Pdf Formatında Olmalı");
+
+
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "docs", fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            var userCv = _context.Resume.FirstOrDefault(x => x.ResumeID == 1);
+            var oldCv = userCv.PdfCV;
+            userCv.PdfCV = "/docs/" + fileName;
+            _context.SaveChanges();
+
+            if (!string.IsNullOrEmpty(oldCv))
+            {
+                var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", oldCv.TrimStart('/'));
+                if (System.IO.File.Exists(oldFilePath))
+                    System.IO.File.Delete(oldFilePath);
+            }
+
+            return Json(new { success = true });
+        }
+
         public IActionResult GetService()
         {
             var service = _context.Service.Where(x => x.ResumeID == 1).ToList();
 
             return Json(service);
         }
-     
+        [HttpPost]
+        public async Task<IActionResult> AddService([FromForm] Service service, IFormFile ServiceImage)
+        {
+            if (ServiceImage != null && ServiceImage.Length > 0)
+            {
+                // Resmi belirtilen klasöre yükle
+                string fileName = Path.GetFileName(ServiceImage.FileName);
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "resume", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await ServiceImage.CopyToAsync(stream);
+                }
+
+                // Servis bilgilerini de kaydet
+                service.ServiceImage = "/images/resume/" + fileName;
+                _context.Service.Add(service);
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false, message = "Resim yüklenirken hata oluştu." });
+            }
+        }
+        [HttpPost]
+        public IActionResult DeleteService(int id)
+        {
+            var service = _context.Service.FirstOrDefault(s => s.ServiceID == id);
+            if (service != null)
+            {
+                _context.Service.Remove(service);
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
 
     }
 }
