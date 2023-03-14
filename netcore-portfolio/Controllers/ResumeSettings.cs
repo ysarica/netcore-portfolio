@@ -76,10 +76,10 @@ namespace netcore_portfolio.Controllers
             return Json(new { success = true });
         }
 
-        public IActionResult UpdateResumeSwitcs(int id,bool value)
+        public IActionResult UpdateResumeSwitcs(int id, bool value)
         {
-            var resumeSwitch = _context.Resume.FirstOrDefault(x=> x.ResumeID==1);
-            if (id==1)//WorkState
+            var resumeSwitch = _context.Resume.FirstOrDefault(x => x.ResumeID == 1);
+            if (id == 1)//WorkState
             {
                 resumeSwitch.WorkState = value;
             }
@@ -87,7 +87,7 @@ namespace netcore_portfolio.Controllers
             {
                 resumeSwitch.ServiceState = value;
             }
-            else if (id==3)
+            else if (id == 3)
             {
                 resumeSwitch.WorkProccesState = value;
             }
@@ -103,7 +103,7 @@ namespace netcore_portfolio.Controllers
             {
                 resumeSwitch.WorkHistoryState = value;
             }
-            else if (id ==7)
+            else if (id == 7)
             {
                 resumeSwitch.EducationState = value;
             }
@@ -194,13 +194,14 @@ namespace netcore_portfolio.Controllers
 
             return Json(service);
         }
+
         [HttpPost]
         public async Task<IActionResult> AddService([FromForm] Service service, IFormFile ServiceImage)
         {
             if (ServiceImage != null && ServiceImage.Length > 0)
             {
                 // Resmi belirtilen klasöre yükle
-                string fileName = Path.GetFileName(ServiceImage.FileName);
+                string fileName= Guid.NewGuid().ToString() + Path.GetExtension(ServiceImage.FileName);
                 string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "resume", fileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
@@ -224,12 +225,53 @@ namespace netcore_portfolio.Controllers
             var service = _context.Service.FirstOrDefault(s => s.ServiceID == id);
             if (service != null)
             {
+                if (!string.IsNullOrEmpty(service.ServiceImage))
+                {
+                    var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", service.ServiceImage.TrimStart('/'));
+                    if (System.IO.File.Exists(oldFilePath))
+                        System.IO.File.Delete(oldFilePath);
+                }
                 _context.Service.Remove(service);
                 _context.SaveChanges();
                 return Json(new { success = true });
             }
             return Json(new { success = false });
         }
+        [HttpGet]
+        public IActionResult GetServiceById(int id)
+        {
+            var service = _context.Service.FirstOrDefault(s => s.ServiceID == id && s.ResumeID == 1);
+            return Json(service);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateService(int id, [FromForm] Service service, IFormFile ServiceImage)
+        {
+            var oldService = _context.Service.FirstOrDefault(x => x.ServiceID == id);
+            var oldImage = oldService.ServiceImage;
+            if (ServiceImage != null && ServiceImage.Length > 0)
+            {
+                // Resmi belirtilen klasöre yükle
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(ServiceImage.FileName);
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "resume", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await ServiceImage.CopyToAsync(stream);
+                }
 
+                if (!string.IsNullOrEmpty(oldImage))
+                {
+                    var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", oldImage.TrimStart('/'));
+                    if (System.IO.File.Exists(oldFilePath))
+                        System.IO.File.Delete(oldFilePath);
+                }
+                oldService.ServiceImage = "/images/resume/" + fileName;
+
+            }
+            oldService.ServiceName = service.ServiceName;
+            oldService.ServiceDescription = service.ServiceDescription;
+            _context.SaveChanges();
+            return Json(new { success = true });
+
+        }
     }
 }

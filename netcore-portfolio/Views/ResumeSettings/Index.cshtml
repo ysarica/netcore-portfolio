@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -8,7 +7,8 @@
 @section sitemap{ Özgeçmiş}
 
 
-@*<input type="text" id="resumeimage" name="resumeimage" />*@
+@*
+<input type="text" id="resumeimage" name="resumeimage" />*@
 
 
 <div class="container">
@@ -19,7 +19,7 @@
             <div class="card card-primary card-outline">
                 <div class="card-body box-profile">
                     <div class="text-center">
-                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-imageResume">  <img id="resumeimage" name="resumeimage" class="profile-user-img img-fluid img-circle" @*src="/adminlte/dist/img/user4-128x128.jpg"*@ alt="User profile picture"></button>
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-imageResume">  <img id="resumeimage" name="resumeimage" class="profile-user-img img-fluid img-circle" @*src="/adminlte/dist/img/user4-128x128.jpg" *@ alt="User profile picture"></button>
                     </div>
                     <hr />
                     <button type="button" data-toggle="modal" data-target="#modal-imageResume" class="btn btn-primary btn-block"><b>Resmi Değiştir</b></button>
@@ -85,105 +85,105 @@
 
         </div>
 
-                <div class="col-md-9">
+        <div class="col-md-9">
 
-                    <div class="card card-primary card-outline">
-                        <div class="card-header">
-                            <h3 class="card-title">Genel Bilgiler</h3>
+            <div class="card card-primary card-outline">
+                <div class="card-header">
+                    <h3 class="card-title">Genel Bilgiler</h3>
 
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
-                            <!-- /.card-tools -->
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
-                            <form id="resumeForm">
-                                <div class="row">
-                                    <div class="col-md-6">
-
-                                        <!--name-->
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">İsim</label>
-                                            <input type="text" class="form-control" id="name" name="name" placeholder="İsim Giriniz">
-                                        </div>
-                                        <!--Mail-->
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Mail</label>
-                                            <input type="email" class="form-control" id="mail" name="mail" placeholder="Mail Giriniz">
-                                        </div>
-
-                                    </div>
-                                    <div class="col-md-6">
-
-                                        <!--surname-->
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Soyisim</label>
-                                            <input type="text" class="form-control" id="surname" name="surname" placeholder="Soyisim Giriniz">
-                                        </div>
-                                        <!--phone-->
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Telefon</label>
-                                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Telefon Giriniz">
-                                        </div>
-
-                                    </div>
-                                    <div class="col-md-12">
-                                        <!--location-->
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Lokasyon</label>
-                                            <input type="text" class="form-control" id="location" name="location" placeholder="Lokasyon Giriniz">
-                                        </div>
-                                        <!--title-->
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Ünvan</label>
-                                            <input type="text" class="form-control" id="title" name="title" placeholder="Ünvan Giriniz">
-                                        </div>
-                                        <!--titleDescription-->
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Özet Ünvan Açıklaması</label>
-                                            <input type="text" class="form-control" id="titleDescription" name="titleDescription" placeholder="Kısa Bir Ünvan Açıklaması Giriniz">
-                                        </div>
-                                        <!--resumeAbout-->
-                                        <div class="form-group">
-                                            <label>Hakkınızda</label>
-                                            <textarea class="form-control" rows="3" id="resumeAbout" name="resumeAbout" placeholder="Kendinizden Bahsedin"></textarea>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-md-12">
-                                        <button type="button" class="btn btn-primary" id="updateButton">Kaydet</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <!-- /.card-body -->
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
                     </div>
+                    <!-- /.card-tools -->
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <form id="resumeForm">
+                        <div class="row">
+                            <div class="col-md-6">
 
-                    <div class="card card-outline card-warning">
-                        <div class="card-header">
-                            <h3 class="card-title">Sunduğunuz Hizmetler</h3>
+                                <!--name-->
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">İsim</label>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="İsim Giriniz">
+                                </div>
+                                <!--Mail-->
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Mail</label>
+                                    <input type="email" class="form-control" id="mail" name="mail" placeholder="Mail Giriniz">
+                                </div>
 
-                            <div class="card-tools">
-                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-addService">Hizmet Ekle</button>
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
                             </div>
-                            <!-- /.card-tools -->
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
-                            <div class="row" id="service-cards">
+                            <div class="col-md-6">
+
+                                <!--surname-->
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Soyisim</label>
+                                    <input type="text" class="form-control" id="surname" name="surname" placeholder="Soyisim Giriniz">
+                                </div>
+                                <!--phone-->
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Telefon</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Telefon Giriniz">
+                                </div>
+
+                            </div>
+                            <div class="col-md-12">
+                                <!--location-->
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Lokasyon</label>
+                                    <input type="text" class="form-control" id="location" name="location" placeholder="Lokasyon Giriniz">
+                                </div>
+                                <!--title-->
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Ünvan</label>
+                                    <input type="text" class="form-control" id="title" name="title" placeholder="Ünvan Giriniz">
+                                </div>
+                                <!--titleDescription-->
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Özet Ünvan Açıklaması</label>
+                                    <input type="text" class="form-control" id="titleDescription" name="titleDescription" placeholder="Kısa Bir Ünvan Açıklaması Giriniz">
+                                </div>
+                                <!--resumeAbout-->
+                                <div class="form-group">
+                                    <label>Hakkınızda</label>
+                                    <textarea class="form-control" rows="3" id="resumeAbout" name="resumeAbout" placeholder="Kendinizden Bahsedin"></textarea>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-primary" id="updateButton">Kaydet</button>
                             </div>
                         </div>
-                        <!-- /.card-body -->
+                    </form>
+                </div>
+                <!-- /.card-body -->
+            </div>
+
+            <div class="card card-outline card-warning">
+                <div class="card-header">
+                    <h3 class="card-title">Sunduğunuz Hizmetler</h3>
+
+                    <div class="card-tools">
+                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-addService">Hizmet Ekle</button>
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.card-tools -->
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="row" id="service-cards">
                     </div>
                 </div>
+                <!-- /.card-body -->
             </div>
         </div>
+    </div>
+</div>
 
 <!--User Image Update Modal Start-->
 <div class="modal fade" id="modal-imageResume">
@@ -288,7 +288,7 @@
                     <div class="form-group">
                         <label for="description">Hizmet Açıklaması</label>
                         <textarea class="form-control" id="ServiceDescription" name="ServiceDescription" rows="3" required></textarea>
-                    </div>               
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
@@ -301,13 +301,61 @@
     <!-- /.modal-dialog -->
 </div>
 <!--User Service Add Modal Finish-->
+<!--User Service Update Modal Start-->
+<div class="modal fade" id="modal-updateService">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Sundugunuz Hizmet Ekleme</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="update-service-form">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="exampleInputFile">Hizmet Logo&Resim</label>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="ServiceImageU" name="ServiceImageU">
+                                <label class="custom-file-label" for="exampleInputFile">Resim Seçin</label>
+                            </div>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-upload"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Güncel Logo&Resim</label>
+                        <img id="ServiceImageVU" class="img-circle img-fluid" height="50" width="50" />
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Hizmet İsmi</label>
+                        <input type="text" class="form-control" id="ServiceNameU" name="ServiceNameU" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Hizmet Açıklaması</label>
+                        <textarea class="form-control" id="ServiceDescriptionU" name="ServiceDescriptionU" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                    <button type="submit" class="btn btn-success">Kaydet</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!--User Service Update Modal Finish-->
 <script src="~/js/ResumeSettings.js"></script>
 <script>
     $(document).ready(function () {
-       
+
         getResumeData();
-        getServiceData();      
- 
-     
+        getServiceData();
+
+
     });
 </script>

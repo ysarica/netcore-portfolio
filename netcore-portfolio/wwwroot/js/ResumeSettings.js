@@ -39,7 +39,6 @@ function getResumeData() {
             $('#educationState').bootstrapSwitch('state', resume.educationState);
             $('#testimonialState').bootstrapSwitch('state', resume.testimonialState);
 
-            getService()
         },
         error: function () {
             Swal.fire({
@@ -193,7 +192,10 @@ function getServiceData() {
                     '</div>' +
                     '<div class="card-footer">' +
                     '<div class="text-right">' +
-                    '<div class="btn-group">' +                   
+                    '<div class="btn-group">' +
+                    '<button type="button" class="btn btn-sm btn-warning" onclick="editService(' + service.serviceID + ')">' +
+                    '<i class="fas fa-edit"></i> Düzenle' +
+                    '</button>' +
                     '<button type="button" class="btn btn-sm btn-danger" onclick="deleteService(' + service.serviceID + ')">' +
                     '<i class="fas fa-trash"></i> Sil' +
                     '</a>' +
@@ -231,6 +233,7 @@ $('#addServiceButton').click(function (e) {
         processData: false,
         contentType: false,
         success: function (data) {
+            $('#modal-addService').modal('hide');
             console.log(data);
             getServiceData();
             Swal.fire({
@@ -289,6 +292,67 @@ function deleteService(serviceId) {
                         'error'
                     );
                 }
+            });
+        }
+    });
+}
+
+function editService(serviceID) {
+    // seçili hizmetin kimliğine göre verileri alın
+    $.ajax({
+        type: "GET",
+        url: "/ResumeSettings/GetServiceById/" + serviceID,
+        success: function (data) {
+            // verileri form elemanlarına yerleştirin
+            $('#ServiceNameU').val(data.serviceName);
+            $('#ServiceDescriptionU').val(data.serviceDescription);
+            $('#ServiceImageVU').attr('src', data.serviceImage);
+
+            // modalı açın ve formu gösterin
+            $('#modal-updateService').modal('show');
+
+            // form gönderme işlemini ele alın
+            $('#update-service-form').on('submit', function (e) {
+                e.preventDefault();
+                var formData = new FormData();
+                formData.append('ServiceImage', $('#ServiceImageU')[0].files[0]);
+                formData.append('ServiceName', $('#ServiceNameU').val());
+                formData.append('ServiceDescription', $('#ServiceDescriptionU').val());
+
+                // seçili hizmetin kimliğine göre verileri güncelleyin
+                $.ajax({
+                    type: "POST",
+                    url: "/ResumeSettings/UpdateService/" + serviceID,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function () {
+                        // başarılı bir şekilde güncellendiğinde, modalı kapatın ve verileri yeniden yükleyin
+                        $('#modal-updateService').modal('hide');
+                        getServiceData();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sunduğunuz Hizmetler',
+                            text: 'Hizmet Başarıyla Güncellendi'
+                        });
+                    },
+                    error: function () {
+                        // hata mesajı gösterin
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Hizmet Güncelleme Hatası',
+                            text: 'Hizmet güncelleme sırasında bir hata oluştu.'
+                        });
+                    }
+                });
+            });
+        },
+        error: function () {
+            // hata mesajı gösterin
+            Swal.fire({
+                icon: 'error',
+                title: 'Hizmet Getirme Hatası',
+                text: 'Hizmet verileri getirilirken bir hata oluştu.'
             });
         }
     });
