@@ -30,11 +30,14 @@ function getResumeData() {
             $('#resumeimage').attr('src', resume.resumeImage);
             $('#resumeCvD').attr('href', resume.pdfCV);
             $('#resumeCvV').attr('href', resume.pdfCV);
-
-
-            $('#workstate').bootstrapSwitch('state', resume.workState);
-            $('#services').bootstrapSwitch('state', resume.serviceState);
-            $('#workprocces').bootstrapSwitch('state', resume.workProccesState);
+            $('#workState').bootstrapSwitch('state', resume.workState);
+            $('#serviceState').bootstrapSwitch('state', resume.serviceState);
+            $('#workProccesState').bootstrapSwitch('state', resume.workProccesState);
+            $('#workPartnersState').bootstrapSwitch('state', resume.workPartnersState);
+            $('#hobbiesState').bootstrapSwitch('state', resume.hobbiesState);
+            $('#workHistoryState').bootstrapSwitch('state', resume.workHistoryState);
+            $('#educationState').bootstrapSwitch('state', resume.educationState);
+            $('#testimonialState').bootstrapSwitch('state', resume.testimonialState);
 
             getService()
         },
