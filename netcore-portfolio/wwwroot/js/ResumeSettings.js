@@ -168,7 +168,7 @@ $('#saveResumeCv').click(function (e) {
         }
     });
 });
-
+//Services Start
 function getServiceData() {
     $.ajax({
         type: "GET",
@@ -225,7 +225,6 @@ $('#addServiceButton').click(function (e) {
     formData.append('ServiceName', $('#ServiceName').val());
     formData.append('ServiceDescription', $('#ServiceDescription').val());
 
-    // AJAX kullanarak verileri post et
     $.ajax({
         type: "POST",
         url: "/ResumeSettings/AddService",
@@ -298,20 +297,16 @@ function deleteService(serviceId) {
 }
 
 function editService(serviceID) {
-    // seçili hizmetin kimliğine göre verileri alın
     $.ajax({
         type: "GET",
         url: "/ResumeSettings/GetServiceById/" + serviceID,
         success: function (data) {
-            // verileri form elemanlarına yerleştirin
             $('#ServiceNameU').val(data.serviceName);
             $('#ServiceDescriptionU').val(data.serviceDescription);
             $('#ServiceImageVU').attr('src', data.serviceImage);
 
-            // modalı açın ve formu gösterin
             $('#modal-updateService').modal('show');
 
-            // form gönderme işlemini ele alın
             $('#update-service-form').on('submit', function (e) {
                 e.preventDefault();
                 var formData = new FormData();
@@ -319,7 +314,6 @@ function editService(serviceID) {
                 formData.append('ServiceName', $('#ServiceNameU').val());
                 formData.append('ServiceDescription', $('#ServiceDescriptionU').val());
 
-                // seçili hizmetin kimliğine göre verileri güncelleyin
                 $.ajax({
                     type: "POST",
                     url: "/ResumeSettings/UpdateService/" + serviceID,
@@ -327,7 +321,6 @@ function editService(serviceID) {
                     processData: false,
                     contentType: false,
                     success: function () {
-                        // başarılı bir şekilde güncellendiğinde, modalı kapatın ve verileri yeniden yükleyin
                         $('#modal-updateService').modal('hide');
                         getServiceData();
                         Swal.fire({
@@ -337,7 +330,6 @@ function editService(serviceID) {
                         });
                     },
                     error: function () {
-                        // hata mesajı gösterin
                         Swal.fire({
                             icon: 'error',
                             title: 'Hizmet Güncelleme Hatası',
@@ -348,7 +340,6 @@ function editService(serviceID) {
             });
         },
         error: function () {
-            // hata mesajı gösterin
             Swal.fire({
                 icon: 'error',
                 title: 'Hizmet Getirme Hatası',
@@ -357,5 +348,86 @@ function editService(serviceID) {
         }
     });
 }
+//Services Stop
+//Procces Start
+function getProccesData() {
+    $.ajax({
+        type: "GET",
+        url: "/ResumeSettings/GetProcces",
+        success: function (data) {
+            var card = '';
+            $('#procces-cards').empty();
+            $.each(data, function (i, procces) {
+                card = '<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">' +
+                    '<div class="card bg-light d-flex flex-fill">' +
+                    '<div class="card-header text-muted border-bottom-0 text-center">' + procces.wpName + '</div>' +
+                    '<div class="card-body pt-0">' +
+                    '<div class="row">' +
+                    '<div class="col-12 text-center">' +
+                    '<img src="' + procces.wpImage + '" alt="user-avatar" class="img-circle img-fluid">' +
+                    '</div>' +
+                    '<div class="col-12">' +
+                    '<p class="text-muted text-sm"><b>Sıralama Sırası</b>: ' + procces.wpOrder + '</p>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="card-footer">' +
+                    '<div class="text-right">' +
+                    '<div class="btn-group">' +
+                    '<button type="button" class="btn btn-sm btn-warning" onclick="editProcces(' + procces.workProcesID + ')">' +
+                    '<i class="fas fa-edit"></i> Düzenle' +
+                    '</button>' +
+                    '<button type="button" class="btn btn-sm btn-danger" onclick="deleteProcces(' + procces.workProcesID + ')">' +
+                    '<i class="fas fa-trash"></i> Sil' +
+                    '</a>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+                $('#procces-cards').append(card);
+            });
+        },
+        error: function () {
+            Swal.fire({
+                icon: 'danger',
+                title: 'Çalışma Süreçleriniz ',
+                text: 'Bir Hata Oluştu Verileri Çekemiyoruz !'
+            });
+        }
+    });
+}
 
+$('#addProccesButton').click(function (e) {
+    e.preventDefault();
+    var formData = new FormData();
+    formData.append('ResumeID', $('#ResumeID').val());
+    formData.append('WpImage', $('#WpImage')[0].files[0]);
+    formData.append('WpName', $('#WpName').val());
+    formData.append('WpOrder', $('#WpOrder').val());
 
+    $.ajax({
+        type: "POST",
+        url: "/ResumeSettings/AddProcces",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            $('#modal-addProcces').modal('hide');
+            console.log(data);
+            getProccesData();
+            Swal.fire({
+                icon: 'success',
+                title: 'Çalışma Süreciniz',
+                text: 'Süreç Başarıyla Eklendi'
+            });
+        },
+        error: function (xhr, status, error) {
+            Swal.fire({
+                icon: 'danger',
+                title: 'Çalışma Süreciniz',
+                text: 'Bir Hata Oluştu !'
+            });
+        }
+    });
+});

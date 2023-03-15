@@ -273,5 +273,90 @@ namespace netcore_portfolio.Controllers
             return Json(new { success = true });
 
         }
+        //Service Finish
+        //WProcces Start
+        public IActionResult GetProcces()
+        {
+            var procces = _context.WorkProces.Where(x => x.ResumeID == 1).ToList().OrderBy(x=> x.WpOrder);
+
+            return Json(procces);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddProcces([FromForm] WorkProces procces, IFormFile WpImage)
+        {
+            if (WpImage != null && WpImage.Length > 0)
+            {
+                // Resmi belirtilen klasöre yükle
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(WpImage.FileName);
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "resume", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await WpImage.CopyToAsync(stream);
+                }
+
+                // Servis bilgilerini de kaydet
+                procces.WpImage = "/images/resume/" + fileName;
+                _context.WorkProces.Add(procces);
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false, message = "Resim yüklenirken hata oluştu." });
+            }
+        }
+        [HttpPost]
+        public IActionResult DeleteProcces(int id)
+        {
+            var procces = _context.WorkProces.FirstOrDefault(s => s.WorkProcesID == id);
+            if (procces != null)
+            {
+                if (!string.IsNullOrEmpty(procces.WpImage))
+                {
+                    var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", procces.WpImage.TrimStart('/'));
+                    if (System.IO.File.Exists(oldFilePath))
+                        System.IO.File.Delete(oldFilePath);
+                }
+                _context.WorkProces.Remove(procces);
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
+        [HttpGet]
+        public IActionResult GetProccesById(int id)
+        {
+            var procces = _context.WorkProces.FirstOrDefault(s => s.WorkProcesID == id && s.ResumeID == 1);
+            return Json(procces);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateProcces(int id, [FromForm] WorkProces procces, IFormFile WpImage)
+        {
+            var oldProcces = _context.WorkProces.FirstOrDefault(x => x.WorkProcesID == id);
+            var oldImage = oldProcces.WpImage;
+            if (WpImage != null && WpImage.Length > 0)
+            {
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(WpImage.FileName);
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "resume", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await WpImage.CopyToAsync(stream);
+                }
+
+                if (!string.IsNullOrEmpty(oldImage))
+                {
+                    var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", oldImage.TrimStart('/'));
+                    if (System.IO.File.Exists(oldFilePath))
+                        System.IO.File.Delete(oldFilePath);
+                }
+                oldProcces.WpImage = "/images/resume/" + fileName;
+
+            }
+            oldProcces.WpName = procces.WpName;
+            oldProcces.WpOrder = procces.WpOrder;
+            _context.SaveChanges();
+            return Json(new { success = true });
+
+        }
     }
 }

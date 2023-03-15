@@ -8,7 +8,7 @@
 
 
 @*
-<input type="text" id="resumeimage" name="resumeimage" />*@
+    <input type="text" id="resumeimage" name="resumeimage" />*@
 
 
 <div class="container">
@@ -181,6 +181,28 @@
                 </div>
                 <!-- /.card-body -->
             </div>
+            <div class="card card-outline card-warning">
+                <div class="card-header">
+                    <h3 class="card-title">Çalışma Süreçlerin</h3>
+
+                    <div class="card-tools">
+                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-addProcces">Süreç Ekle</button>
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                    <!-- /.card-tools -->
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="row" id="procces-cards">
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+
+
+
         </div>
     </div>
 </div>
@@ -349,13 +371,58 @@
     <!-- /.modal-dialog -->
 </div>
 <!--User Service Update Modal Finish-->
+<!--User Procces Add Modal Start-->
+<div class="modal fade" id="modal-addProcces">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Çalışma Süreci Ekleme</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="service-form">
+                <input type="text" hidden value="1" id="ResumeID" name="ResumeID" />
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="exampleInputFile">Süreç Logo&Resim</label>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="WpImage" name="WpImage">
+                                <label class="custom-file-label" for="exampleInputFile">Resim Seçin</label>
+                            </div>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-upload"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Süreç Adı</label>
+                        <input type="text" class="form-control" id="WpName" name="WpName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Süreç Sırası</label>
+                        <input type="number" class="form-control" id="WpOrder" name="WpOrder" required>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                    <button type="submit" id="addProccesButton" class="btn btn-success">Kaydet</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!--User Service Add Modal Finish-->
 <script src="~/js/ResumeSettings.js"></script>
 <script>
     $(document).ready(function () {
 
         getResumeData();
         getServiceData();
-
+        getProccesData();
 
     });
 </script>
