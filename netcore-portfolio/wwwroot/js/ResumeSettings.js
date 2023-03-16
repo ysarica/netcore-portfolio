@@ -323,6 +323,8 @@ function editService(serviceID) {
                     success: function () {
                         $('#modal-updateService').modal('hide');
                         getServiceData();
+                        serviceID = null;
+                        formData = null;
                         Swal.fire({
                             icon: 'success',
                             title: 'Sunduğunuz Hizmetler',
@@ -504,6 +506,8 @@ function editProcces(proccesId) {
                     success: function () {
                         $('#modal-updateProcces').modal('hide');
                         getProccesData();
+                        proccesId = null;
+                        formData = null;
                         Swal.fire({
                             icon: 'success',
                             title: 'Çalışma Süreciniz',
@@ -529,3 +533,183 @@ function editProcces(proccesId) {
         }
     });
 }
+//Procces Stop
+//Hobbies Start
+function getHobbiesData() {
+    $.ajax({
+        type: "GET",
+        url: "/ResumeSettings/GetHobbies",
+        success: function (data) {
+            var card = '';
+            $('#hobbie-cards').empty();
+            $.each(data, function (i, hobbies) {
+                card = '<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">' +
+                    '<div class="card bg-light d-flex flex-fill">' +
+                    '<div class="card-header text-muted border-bottom-0 text-center">' + hobbies.hobbieName + '</div>' +
+                    '<div class="card-body pt-0">' +
+                    '<div class="row">' +
+                    '<div class="col-12 text-center">' +
+                    '<img src="' + hobbies.hobbieImage + '" alt="user-avatar" class="img-circle img-fluid">' +
+                    '</div>' +              
+                    '</div>' +
+                    '</div>' +
+                    '<div class="card-footer">' +
+                    '<div class="text-right">' +
+                    '<div class="btn-group">' +
+                    '<button type="button" class="btn btn-sm btn-warning" onclick="editHobbies(' + hobbies.hobbieID + ')">' +
+                    '<i class="fas fa-edit"></i> Düzenle' +
+                    '</button>' +
+                    '<button type="button" class="btn btn-sm btn-danger" onclick="deleteHobbies(' + hobbies.hobbieID + ')">' +
+                    '<i class="fas fa-trash"></i> Sil' +
+                    '</a>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+                $('#hobbie-cards').append(card);
+            });
+        },
+        error: function () {
+            Swal.fire({
+                icon: 'danger',
+                title: 'Hobileriniz',
+                text: 'Bir Hata Oluştu Verileri Çekemiyoruz !'
+            });
+        }
+    });
+}
+
+$('#addHobbiesButton').click(function (e) {
+    e.preventDefault();
+    var formData = new FormData();
+    formData.append('ResumeID', $('#ResumeID').val());
+    formData.append('HobbieImage', $('#HobbieImage')[0].files[0]);
+    formData.append('HobbieName', $('#HobbieName').val());
+
+    $.ajax({
+        type: "POST",
+        url: "/ResumeSettings/AddHobbies",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            $('#modal-addHobbies').modal('hide');
+            console.log(data);
+            getHobbiesData();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Hobileriniz',
+                text: 'Hobi Başarıyla Eklendi'
+            });
+        },
+        error: function (xhr, status, error) {
+            Swal.fire({
+                icon: 'danger',
+                title: 'Hobileriniz',
+                text: 'Bir Hata Oluştu !'
+            });
+        }
+    });
+});
+
+function deleteHobbies(hobbieID) {
+    Swal.fire({
+        title: 'Emin misiniz?',
+        text: "Bu işlemi geri alamazsınız!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Evet, sil!',
+        cancelButtonText: 'İptal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/ResumeSettings/DeleteHobbies',
+                data: { 'id': hobbieID },
+                type: 'POST',
+                success: function (data) {
+                    if (data.success) {
+                        Swal.fire(
+                            'Silindi!',
+                            'Hobi başarıyla silindi.',
+                            'success'
+                        ).then(() => {
+                            getHobbiesData();
+                        });
+                    } else {
+                        Swal.fire(
+                            'Hata!',
+                            'Hobi silinirken bir hata oluştu. 1',
+                            'error'
+                        );
+                    }
+                },
+                error: function () {
+                    Swal.fire(
+                        'Hata!',
+                        'Hobi silinirken bir hata oluştu. 2',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+}
+
+function editHobbies(hobbieID) {
+    $.ajax({
+        type: "GET",
+        url: "/ResumeSettings/GetHobbiesById/" + hobbieID,
+        success: function (data) {
+            $('#HobbieNameU').val(data.hobbieName);
+            $('#HobbieImageVU').attr('src', data.hobbieImage);
+
+            $('#modal-updateHobbies').modal('show');
+
+            $('#update-hobbie-form').on('submit', function (e) {
+                e.preventDefault();
+                var formData = new FormData();
+                formData.append('HobbieImage', $('#HobbieImageU')[0].files[0]);
+                formData.append('HobbieName', $('#HobbieNameU').val());
+
+                $.ajax({
+                    type: "POST",
+                    url: "/ResumeSettings/UpdateHobbies/" + hobbieID,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function () {
+                        $('#modal-updateHobbies').modal('hide');
+                        getHobbiesData();
+                        hobbieID = null;
+                        formData = null;
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Hobileriniz',
+                            text: 'Hobi Başarıyla Güncellendi'
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Hobileriniz',
+                            text: 'Hobi güncelleme sırasında bir hata oluştu.'
+                        });
+                    }
+                });
+            });
+        },
+        error: function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Hobileriniz',
+                text: 'Hobi verileri getirilirken bir hata oluştu.'
+            });
+        }
+    });
+}
+//Hobbies Stop
+

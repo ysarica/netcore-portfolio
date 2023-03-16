@@ -358,5 +358,90 @@ namespace netcore_portfolio.Controllers
             return Json(new { success = true });
 
         }
+        //WProcces Finish
+        //Hobbies Start
+        public IActionResult GetHobbies()
+        {
+            var hobbies = _context.Hobbies.Where(x => x.ResumeID == 1).ToList();
+
+            return Json(hobbies);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddHobbies([FromForm] Hobbies hobbies, IFormFile HobbieImage)
+        {
+            if (HobbieImage != null && HobbieImage.Length > 0)
+            {
+                // Resmi belirtilen klasöre yükle
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(HobbieImage.FileName);
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "resume", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await HobbieImage.CopyToAsync(stream);
+                }
+
+                // Servis bilgilerini de kaydet
+                hobbies.HobbieImage = "/images/resume/" + fileName;
+                _context.Hobbies.Add(hobbies);
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false, message = "Resim yüklenirken hata oluştu." });
+            }
+        }
+        [HttpPost]
+        public IActionResult DeleteHobbies(int id)
+        {
+            var hobbies = _context.Hobbies.FirstOrDefault(s => s.HobbieID == id);
+            if (hobbies != null)
+            {
+                if (!string.IsNullOrEmpty(hobbies.HobbieImage))
+                {
+                    var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", hobbies.HobbieImage.TrimStart('/'));
+                    if (System.IO.File.Exists(oldFilePath))
+                        System.IO.File.Delete(oldFilePath);
+                }
+                _context.Hobbies.Remove(hobbies);
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
+        [HttpGet]
+        public IActionResult GetHobbiesById(int id)
+        {
+            var hobbies = _context.Hobbies.FirstOrDefault(s => s.HobbieID == id && s.ResumeID == 1);
+            return Json(hobbies);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateHobbies(int id, [FromForm] Hobbies hobbies, IFormFile HobbieImage)
+        {
+            var oldHobbies = _context.Hobbies.FirstOrDefault(x => x.HobbieID == id);
+            var oldImage = oldHobbies.HobbieImage;
+            if (HobbieImage != null && HobbieImage.Length > 0)
+            {
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(HobbieImage.FileName);
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "resume", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await HobbieImage.CopyToAsync(stream);
+                }
+
+                if (!string.IsNullOrEmpty(oldImage))
+                {
+                    var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", oldImage.TrimStart('/'));
+                    if (System.IO.File.Exists(oldFilePath))
+                        System.IO.File.Delete(oldFilePath);
+                }
+                oldHobbies.HobbieImage = "/images/resume/" + fileName;
+
+            }
+            oldHobbies.HobbieName = hobbies.HobbieName;
+            _context.SaveChanges();
+            return Json(new { success = true });
+
+        }
+
     }
 }
