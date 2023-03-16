@@ -431,3 +431,101 @@ $('#addProccesButton').click(function (e) {
         }
     });
 });
+
+function deleteProcces(proccesId) {
+    Swal.fire({
+        title: 'Emin misiniz?',
+        text: "Bu işlemi geri alamazsınız!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Evet, sil!',
+        cancelButtonText: 'İptal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/ResumeSettings/DeleteProcces',
+                data: { 'id': proccesId },
+                type: 'POST',
+                success: function (data) {
+                    if (data.success) {
+                        Swal.fire(
+                            'Silindi!',
+                            'Süreç başarıyla silindi.',
+                            'success'
+                        ).then(() => {
+                            getProccesData();
+                        });
+                    } else {
+                        Swal.fire(
+                            'Hata!',
+                            'Süreç silinirken bir hata oluştu. 1',
+                            'error'
+                        );
+                    }
+                },
+                error: function () {
+                    Swal.fire(
+                        'Hata!',
+                        'Süreç silinirken bir hata oluştu. 2',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+}
+
+function editProcces(proccesId) {
+    $.ajax({
+        type: "GET",
+        url: "/ResumeSettings/GetProccesById/" + proccesId,
+        success: function (data) {
+            $('#WpNameU').val(data.wpName);
+            $('#WpOrderU').val(data.wpOrder);
+            $('#WpImageVU').attr('src', data.wpImage);
+
+            $('#modal-updateProcces').modal('show');
+
+            $('#update-procces-form').on('submit', function (e) {
+                e.preventDefault();
+                var formData = new FormData();
+                formData.append('WpImage', $('#WpImageU')[0].files[0]);
+                formData.append('WpName', $('#WpNameU').val());
+                formData.append('WpOrder', $('#WpOrderU').val());
+
+                $.ajax({
+                    type: "POST",
+                    url: "/ResumeSettings/UpdateProcces/" + proccesId,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function () {
+                        $('#modal-updateProcces').modal('hide');
+                        getProccesData();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Çalışma Süreciniz',
+                            text: 'Süreciniz Başarıyla Güncellendi'
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Çalışma Süreciniz Hatası',
+                            text: 'Çalışma Süreciniz güncelleme sırasında bir hata oluştu.'
+                        });
+                    }
+                });
+            });
+        },
+        error: function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Çalışma Süreciniz Hatası',
+                text: 'Çalışma Süreciniz verileri getirilirken bir hata oluştu.'
+            });
+        }
+    });
+}

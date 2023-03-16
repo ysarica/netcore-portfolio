@@ -415,7 +415,55 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-<!--User Service Add Modal Finish-->
+<!--User Procces Add Modal Finish-->
+<!--User Procces Update Modal Start-->
+<div class="modal fade" id="modal-updateProcces">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Çalışma Süreci Ekleme</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="update-procces-form">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="exampleInputFile">Süreç Logo&Resim</label>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="WpImageU" name="WpImageU">
+                                <label class="custom-file-label" for="exampleInputFile">Resim Seçin</label>
+                            </div>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-upload"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Güncel Logo&Resim</label>
+                        <img id="WpImageVU" class="img-circle img-fluid" height="50" width="50" />
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Süreç İsmi</label>
+                        <input type="text" class="form-control" id="WpNameU" name="WpNameU" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Süreç Sırası</label>
+                        <input type="number" class="form-control" id="WpOrderU" name="WpOrderU" required>
+                    </div>               
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                    <button type="submit" class="btn btn-success">Kaydet</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!--User Procces Update Modal Finish-->
 <script src="~/js/ResumeSettings.js"></script>
 <script>
     $(document).ready(function () {
