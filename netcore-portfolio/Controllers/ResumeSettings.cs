@@ -244,9 +244,9 @@ namespace netcore_portfolio.Controllers
             return Json(service);
         }
         [HttpPost]
-        public async Task<IActionResult> UpdateService(int id, [FromForm] Service service, IFormFile ServiceImage)
+        public async Task<IActionResult> UpdateService([FromForm] Service service, IFormFile ServiceImage)
         {
-            var oldService = _context.Service.FirstOrDefault(x => x.ServiceID == id);
+            var oldService = _context.Service.FirstOrDefault(x => x.ServiceID == service.ServiceID);
             var oldImage = oldService.ServiceImage;
             if (ServiceImage != null && ServiceImage.Length > 0)
             {
@@ -330,9 +330,9 @@ namespace netcore_portfolio.Controllers
             return Json(procces);
         }
         [HttpPost]
-        public async Task<IActionResult> UpdateProcces(int id, [FromForm] WorkProces procces, IFormFile WpImage)
+        public async Task<IActionResult> UpdateProcces([FromForm] WorkProces procces, IFormFile WpImage)
         {
-            var oldProcces = _context.WorkProces.FirstOrDefault(x => x.WorkProcesID == id);
+            var oldProcces = _context.WorkProces.FirstOrDefault(x => x.WorkProcesID == procces.WorkProcesID);
             var oldImage = oldProcces.WpImage;
             if (WpImage != null && WpImage.Length > 0)
             {
@@ -359,6 +359,89 @@ namespace netcore_portfolio.Controllers
 
         }
         //WProcces Finish
+        //WPartners Start
+        public IActionResult GetPartners()
+        {
+            var partners = _context.WorkPartners.Where(x => x.ResumeID == 1).ToList();
+
+            return Json(partners);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddPartners([FromForm] WorkPartners partners, IFormFile WpsLogo)
+        {
+            if (WpsLogo != null && WpsLogo.Length > 0)
+            {
+                // Resmi belirtilen klasöre yükle
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(WpsLogo.FileName);
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "resume", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await WpsLogo.CopyToAsync(stream);
+                }
+
+                // Servis bilgilerini de kaydet
+                partners.WpsLogo = "/images/resume/" + fileName;
+                _context.WorkPartners.Add(partners);
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false, message = "Resim yüklenirken hata oluştu." });
+            }
+        }
+        [HttpPost]
+        public IActionResult DeletePartners(int id)
+        {
+            var partners = _context.WorkPartners.FirstOrDefault(s => s.WorkPartnersID == id);
+            if (partners != null)
+            {
+                if (!string.IsNullOrEmpty(partners.WpsLogo))
+                {
+                    var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", partners.WpsLogo.TrimStart('/'));
+                    if (System.IO.File.Exists(oldFilePath))
+                        System.IO.File.Delete(oldFilePath);
+                }
+                _context.WorkPartners.Remove(partners);
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
+        [HttpGet]
+        public IActionResult GetPartnersById(int id)
+        {
+            var partners = _context.WorkPartners.FirstOrDefault(s => s.WorkPartnersID == id && s.ResumeID == 1);
+            return Json(partners);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdatePartners(WorkPartners partners, IFormFile WpsLogo)
+        {
+            var oldPartners = _context.WorkPartners.FirstOrDefault(x => x.WorkPartnersID == partners.WorkPartnersID);
+            if (WpsLogo != null && WpsLogo.Length > 0)
+            {
+                var oldImage = oldPartners.WpsLogo;
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(WpsLogo.FileName);
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "resume", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await WpsLogo.CopyToAsync(stream);
+                }
+
+                if (!string.IsNullOrEmpty(oldImage))
+                {
+                    var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", oldImage.TrimStart('/'));
+                    if (System.IO.File.Exists(oldFilePath))
+                        System.IO.File.Delete(oldFilePath);
+                }
+                oldPartners.WpsLogo = "/images/resume/" + fileName;
+            }
+            oldPartners.WpsName = partners.WpsName;
+            _context.SaveChanges();
+            return Json(new { success = true });
+
+        }
+        //WPartners Finish
         //Hobbies Start
         public IActionResult GetHobbies()
         {
@@ -415,9 +498,9 @@ namespace netcore_portfolio.Controllers
             return Json(hobbies);
         }
         [HttpPost]
-        public async Task<IActionResult> UpdateHobbies(int id, [FromForm] Hobbies hobbies, IFormFile HobbieImage)
+        public async Task<IActionResult> UpdateHobbies([FromForm] Hobbies hobbies, IFormFile HobbieImage)
         {
-            var oldHobbies = _context.Hobbies.FirstOrDefault(x => x.HobbieID == id);
+            var oldHobbies = _context.Hobbies.FirstOrDefault(x => x.HobbieID == hobbies.HobbieID);
             var oldImage = oldHobbies.HobbieImage;
             if (HobbieImage != null && HobbieImage.Length > 0)
             {
@@ -442,6 +525,6 @@ namespace netcore_portfolio.Controllers
             return Json(new { success = true });
 
         }
-
+        //Hobbies Finish
     }
 }

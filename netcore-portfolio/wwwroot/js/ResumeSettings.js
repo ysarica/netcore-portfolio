@@ -301,9 +301,12 @@ function editService(serviceID) {
         type: "GET",
         url: "/ResumeSettings/GetServiceById/" + serviceID,
         success: function (data) {
+            var fileUpload = document.getElementById("ServiceImageU");
+            fileUpload.form.reset();
             $('#ServiceNameU').val(data.serviceName);
             $('#ServiceDescriptionU').val(data.serviceDescription);
             $('#ServiceImageVU').attr('src', data.serviceImage);
+            $('#ServiceID').val(data.serviceID);
 
             $('#modal-updateService').modal('show');
 
@@ -313,10 +316,11 @@ function editService(serviceID) {
                 formData.append('ServiceImage', $('#ServiceImageU')[0].files[0]);
                 formData.append('ServiceName', $('#ServiceNameU').val());
                 formData.append('ServiceDescription', $('#ServiceDescriptionU').val());
+                formData.append('ServiceID', $('#ServiceID').val());
 
                 $.ajax({
                     type: "POST",
-                    url: "/ResumeSettings/UpdateService/" + serviceID,
+                    url: "/ResumeSettings/UpdateService/",
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -484,9 +488,11 @@ function editProcces(proccesId) {
         type: "GET",
         url: "/ResumeSettings/GetProccesById/" + proccesId,
         success: function (data) {
+            var fileUpload = document.getElementById("WpImageU"); fileUpload.form.reset();
             $('#WpNameU').val(data.wpName);
             $('#WpOrderU').val(data.wpOrder);
             $('#WpImageVU').attr('src', data.wpImage);
+            $('#WorkProcesID').val(data.workProcesID);
 
             $('#modal-updateProcces').modal('show');
 
@@ -496,10 +502,11 @@ function editProcces(proccesId) {
                 formData.append('WpImage', $('#WpImageU')[0].files[0]);
                 formData.append('WpName', $('#WpNameU').val());
                 formData.append('WpOrder', $('#WpOrderU').val());
+                formData.append('workProcesID', $('#WorkProcesID').val());
 
                 $.ajax({
                     type: "POST",
-                    url: "/ResumeSettings/UpdateProcces/" + proccesId,
+                    url: "/ResumeSettings/UpdateProcces/",
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -534,6 +541,184 @@ function editProcces(proccesId) {
     });
 }
 //Procces Stop
+//Partners Start
+function getPartnersData() {
+    $.ajax({
+        type: "GET",
+        url: "/ResumeSettings/GetPartners",
+        success: function (data) {
+            var card = '';
+            $('#partners-cards').empty();
+            $.each(data, function (i, partners) {
+                card = '<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">' +
+                    '<div class="card bg-light d-flex flex-fill">' +
+                    '<div class="card-header text-muted border-bottom-0 text-center">' + partners.wpsName + '</div>' +
+                    '<div class="card-body pt-0">' +
+                    '<div class="row">' +
+                    '<div class="col-12 text-center">' +
+                    '<img src="' + partners.wpsLogo + '" alt="user-avatar" class="img-circle img-fluid">' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="card-footer">' +
+                    '<div class="text-right">' +
+                    '<div class="btn-group">' +
+                    '<button type="button" class="btn btn-sm btn-warning" onclick="editPartners(' + partners.workPartnersID + ')">' +
+                    '<i class="fas fa-edit"></i> Düzenle' +
+                    '</button>' +
+                    '<button type="button" class="btn btn-sm btn-danger" onclick="deletePartners(' + partners.workPartnersID + ')">' +
+                    '<i class="fas fa-trash"></i> Sil' +
+                    '</a>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+                $('#partners-cards').append(card);
+            });
+        },
+        error: function () {
+            Swal.fire({
+                icon: 'danger',
+                title: 'İş Ortaklarınız',
+                text: 'Bir Hata Oluştu Verileri Çekemiyoruz !'
+            });
+        }
+    });
+}
+
+$('#addPartnersButton').click(function (e) {
+    e.preventDefault();
+    var formData = new FormData();
+    formData.append('ResumeID', $('#ResumeID').val());
+    formData.append('WpsLogo', $('#WpsLogo')[0].files[0]);
+    formData.append('WpsName', $('#WpsName').val());
+
+    $.ajax({
+        type: "POST",
+        url: "/ResumeSettings/AddPartners",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            $('#modal-addPartners').modal('hide');
+            console.log(data);
+            getPartnersData();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'İş Ortaklarınız',
+                text: 'Ortak Başarıyla Eklendi'
+            });
+        },
+        error: function (xhr, status, error) {
+            Swal.fire({
+                icon: 'danger',
+                title: 'İş Otaklarınız',
+                text: 'Bir Hata Oluştu !'
+            });
+        }
+    });
+});
+
+function deletePartners(partnersID) {
+    Swal.fire({
+        title: 'Emin misiniz?',
+        text: "Bu işlemi geri alamazsınız!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Evet, sil!',
+        cancelButtonText: 'İptal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/ResumeSettings/DeletePartners',
+                data: { 'id': partnersID },
+                type: 'POST',
+                success: function (data) {
+                    if (data.success) {
+                        Swal.fire(
+                            'Silindi!',
+                            'Ortak başarıyla silindi.',
+                            'success'
+                        ).then(() => {
+                            getPartnersData();
+                        });
+                    } else {
+                        Swal.fire(
+                            'Hata!',
+                            'Ortak silinirken bir hata oluştu. 1',
+                            'error'
+                        );
+                    }
+                },
+                error: function () {
+                    Swal.fire(
+                        'Hata!',
+                        'Ortak silinirken bir hata oluştu. 2',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+}
+function editPartners(partnersID) {
+    $.ajax({
+        type: "GET",
+        url: "/ResumeSettings/GetPartnersById/" + partnersID,
+        success: function (data) {
+            var fileUpload = document.getElementById("WpsLogoU");
+            fileUpload.form.reset();
+            $('#WorkPartnersID').val(data.workPartnersID);
+            $('#WpsNameU').val(data.wpsName);
+            $('#WpsLogoVU').attr('src', data.wpsLogo);
+            $('#modal-updatePartners').modal('show');
+            $('#update-partners-form').on('submit', function (e) {
+                e.preventDefault();
+                var formData = new FormData();
+                formData.append('WpsLogo', $('#WpsLogoU')[0].files[0]);
+                formData.append('WpsName', $('#WpsNameU').val());
+                formData.append('WorkPartnersID', $('#WorkPartnersID').val());
+                $.ajax({
+                    type: "POST",
+                    url: "/ResumeSettings/UpdatePartners/",
+                    data:formData,
+                    processData: false,
+                    contentType: false,
+                    success: function () {
+                        $('#modal-updatePartners').modal('hide');
+                        getPartnersData();
+                        partnersID = null;
+                        formData = null;
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'İş Ortaklarınız',
+                            text: 'Ortak Başarıyla Güncellendi'
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'İş Ortaklarınız',
+                            text: 'Ortak güncelleme sırasında bir hata oluştu.'
+                        });
+                    }
+                });
+            });
+        },
+        error: function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'İş Ortaklarınız',
+                text: 'Ortak verileri getirilirken bir hata oluştu.2'
+            });
+        }
+    });
+}
+//Partners Stop
 //Hobbies Start
 function getHobbiesData() {
     $.ajax({
@@ -664,8 +849,10 @@ function editHobbies(hobbieID) {
         type: "GET",
         url: "/ResumeSettings/GetHobbiesById/" + hobbieID,
         success: function (data) {
+            var fileUpload = document.getElementById("HobbieImageU"); fileUpload.form.reset();
             $('#HobbieNameU').val(data.hobbieName);
             $('#HobbieImageVU').attr('src', data.hobbieImage);
+            $('#HobbieID').val(data.hobbieID);
 
             $('#modal-updateHobbies').modal('show');
 
@@ -674,10 +861,11 @@ function editHobbies(hobbieID) {
                 var formData = new FormData();
                 formData.append('HobbieImage', $('#HobbieImageU')[0].files[0]);
                 formData.append('HobbieName', $('#HobbieNameU').val());
+                formData.append('HobbieID', $('#HobbieID').val());
 
                 $.ajax({
                     type: "POST",
-                    url: "/ResumeSettings/UpdateHobbies/" + hobbieID,
+                    url: "/ResumeSettings/UpdateHobbies/",
                     data: formData,
                     processData: false,
                     contentType: false,

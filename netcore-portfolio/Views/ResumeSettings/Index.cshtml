@@ -202,6 +202,25 @@
             </div>
             <div class="card card-outline card-warning collapsed-card">
                 <div class="card-header">
+                    <h3 class="card-title">İş Ortakların</h3>
+
+                    <div class="card-tools">
+                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-addPartners">Ortak Ekle</button>
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <!-- /.card-tools -->
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="row" id="partners-cards">
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <div class="card card-outline card-warning collapsed-card">
+                <div class="card-header">
                     <h3 class="card-title">Hobilerin</h3>
 
                     <div class="card-tools">
@@ -353,6 +372,7 @@
             </div>
             <form id="update-service-form">
                 <div class="modal-body">
+                    <input type="hidden" id="ServiceID" name="ServiceID" />
                     <div class="form-group">
                         <label for="exampleInputFile">Hizmet Logo&Resim</label>
                         <div class="input-group">
@@ -446,6 +466,7 @@
             </div>
             <form id="update-procces-form">
                 <div class="modal-body">
+                    <input type="hidden" id="WorkProcesID" name="WorkProcesID" />
                     <div class="form-group">
                         <label for="exampleInputFile">Süreç Logo&Resim</label>
                         <div class="input-group">
@@ -482,6 +503,94 @@
     <!-- /.modal-dialog -->
 </div>
 <!--User Procces Update Modal Finish-->
+<!--User Partners Add Modal Start-->
+<div class="modal fade" id="modal-addPartners">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">İş Ortağı Ekleme</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="partners-form">
+                <input type="text" hidden value="1" id="ResumeID" name="ResumeID" />
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="exampleInputFile">Ortak Logo&Resim</label>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="WpsLogo" name="WpsLogo">
+                                <label class="custom-file-label" for="exampleInputFile">Resim Seçin</label>
+                            </div>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-upload"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Ortak Adı</label>
+                        <input type="text" class="form-control" id="WpsName" name="WpsName" required>
+                    </div>
+
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                    <button type="submit" id="addPartnersButton" class="btn btn-success">Kaydet</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!--User Partners Add Modal Finish-->
+<!--User Partners Update Modal Start-->
+<div class="modal fade" id="modal-updatePartners">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">İş Ortağı Ekleme</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="update-partners-form">
+                <div class="modal-body">
+                    <input type="hidden" id="WorkPartnersID" name="WorkPartnersID" />
+                    <div class="form-group">
+                        <label for="exampleInputFile">Ortak Logo&Resim</label>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="WpsLogoU" name="WpsLogoU">
+                                <label class="custom-file-label" for="exampleInputFile">Resim Seçin</label>
+                            </div>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fa fa-upload"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Güncel Logo&Resim</label>
+                        <img id="WpsLogoVU" class="img-circle img-fluid" height="50" width="50" />
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Ortak İsmi</label>
+                        <input type="text" class="form-control" id="WpsNameU" name="WpsNameU" required>
+                    </div>
+
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                    <button type="submit" class="btn btn-success">Kaydet</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!--User Partners Update Modal Finish-->
 <!--User Hobbies Add Modal Start-->
 <div class="modal fade" id="modal-addHobbies">
     <div class="modal-dialog">
@@ -511,7 +620,7 @@
                         <label for="title">Hobi Adı</label>
                         <input type="text" class="form-control" id="HobbieName" name="HobbieName" required>
                     </div>
-                 
+
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
@@ -536,6 +645,7 @@
             </div>
             <form id="update-hobbie-form">
                 <div class="modal-body">
+                    <input type="text" id="HobbieID" name="HobbieID" />
                     <div class="form-group">
                         <label for="exampleInputFile">Hobi Logo&Resim</label>
                         <div class="input-group">
@@ -556,7 +666,7 @@
                         <label for="title">Hobi İsmi</label>
                         <input type="text" class="form-control" id="HobbieNameU" name="HobbieNameU" required>
                     </div>
-             
+
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
@@ -572,10 +682,11 @@
 <script src="~/js/ResumeSettings.js"></script>
 <script>
     $(document).ready(function () {
-
+        bsCustomFileInput.init();
         getResumeData();
         getServiceData();
         getProccesData();
+        getPartnersData();
         getHobbiesData();
     });
 </script>
