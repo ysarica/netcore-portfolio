@@ -900,4 +900,398 @@ function editHobbies(hobbieID) {
     });
 }
 //Hobbies Stop
+//WHistory Start
+function getHistoryData() {
+    $.ajax({
+        type: "GET",
+        url: "/ResumeSettings/GetHistory",
+        success: function (data) {
+            var card = '';
+            $('#history-cards').empty();
+            $.each(data, function (i, history) {
+                card = '<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">' +
+                    '<div class="card bg-light d-flex flex-fill">' +
+                    '<div class="card-header text-muted border-bottom-0 text-center"><b>Firma:</b>:' + history.companyName + '</div>' +
+                    '<div class="card-body pt-0">' +
+                    '<div class="row">' +
+                    '<div class="col-12">' +
+                    '<p class="text-muted text-sm"><b>Giriş Tarihi:</b>: ' + history.startDate + '</p>' +
+                    '</div>' +
+                    '<div class="col-12">' +
+                    '<p class="text-muted text-sm"><b>Çıkış Tarihi:</b>: ' + history.finishDate + '</p>' +
+                    '</div>' +
+                    '<div class="col-12">' +
+                    '<p class="text-muted text-sm"><b>Pozisyon:</b>: ' + history.workTitle + '</p>' +
+                    '</div>' +
+                    '<div class="col-12">' +
+                    '<p class="text-muted text-sm"><b>İş Açıklaması:</b>: ' + history.workDescription + '</p>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="card-footer">' +
+                    '<div class="text-right">' +
+                    '<div class="btn-group">' +
+                    '<button type="button" class="btn btn-sm btn-warning" onclick="editHistory(' + history.workHistoryID + ')">' +
+                    '<i class="fas fa-edit"></i> Düzenle' +
+                    '</button>' +
+                    '<button type="button" class="btn btn-sm btn-danger" onclick="deleteHistory(' + history.workHistoryID + ')">' +
+                    '<i class="fas fa-trash"></i> Sil' +
+                    '</a>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+                $('#history-cards').append(card);
+            });
+        },
+        error: function () {
+            Swal.fire({
+                icon: 'danger',
+                title: 'Tecrübeleriniz',
+                text: 'Bir Hata Oluştu Verileri Çekemiyoruz !'
+            });
+        }
+    });
+}
 
+$('#addHistoryButton').click(function (e) {
+    e.preventDefault();
+    var formData = new FormData();
+    formData.append('ResumeID', $('#ResumeID').val());
+    formData.append('StartDate', $('#StartDate').val());
+    formData.append('FinishDate', $('#FinishDate').val());
+    formData.append('WorkTitle', $('#WorkTitle').val());
+    formData.append('CompanyName', $('#CompanyName').val());
+    formData.append('WorkDescription', $('#WorkDescription').val());
+
+    $.ajax({
+        type: "POST",
+        url: "/ResumeSettings/AddHistory",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            $('#modal-addHistory').modal('hide');
+            console.log(data);
+            getHistoryData();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Tecrübeleriniz',
+                text: 'Tecrübe Başarıyla Eklendi'
+            });
+        },
+        error: function (xhr, status, error) {
+            Swal.fire({
+                icon: 'danger',
+                title: 'Tecrübeleriniz',
+                text: 'Bir Hata Oluştu !'
+            });
+        }
+    });
+});
+
+function deleteHistory(historyID) {
+    Swal.fire({
+        title: 'Emin misiniz?',
+        text: "Bu işlemi geri alamazsınız!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Evet, sil!',
+        cancelButtonText: 'İptal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/ResumeSettings/DeleteHistory',
+                data: { 'id': historyID },
+                type: 'POST',
+                success: function (data) {
+                    if (data.success) {
+                        Swal.fire(
+                            'Silindi!',
+                            'Tecrübe başarıyla silindi.',
+                            'success'
+                        ).then(() => {
+                            getHistoryData();
+                        });
+                    } else {
+                        Swal.fire(
+                            'Hata!',
+                            'Tecrübe silinirken bir hata oluştu. 1',
+                            'error'
+                        );
+                    }
+                },
+                error: function () {
+                    Swal.fire(
+                        'Hata!',
+                        'Tecrübe silinirken bir hata oluştu. 2',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+}
+
+function editHistory(historyID) {
+    $.ajax({
+        type: "GET",
+        url: "/ResumeSettings/GetHistoryById/" + historyID,
+        success: function (data) {
+            $('#StartDateU').val(data.startDate);
+            $('#FinishDateU').val(data.finishDate);
+            $('#WorkTitleU').val(data.workTitle);
+            $('#CompanyNameU').val(data.companyName);
+            $('#WorkDescriptionU').val(data.workDescription);
+            $('#WorkHistoryID').val(data.workHistoryID);
+
+            $('#modal-updateHistory').modal('show');
+
+            $('#update-history-form').on('submit', function (e) {
+                e.preventDefault();
+                var formData = new FormData();
+                formData.append('StartDate', $('#StartDateU').val());
+                formData.append('FinishDate', $('#FinishDateU').val());
+                formData.append('WorkTitle', $('#WorkTitleU').val());
+                formData.append('CompanyName', $('#CompanyNameU').val());
+                formData.append('WorkDescription', $('#WorkDescriptionU').val());
+                formData.append('WorkHistoryID', $('#WorkHistoryID').val());
+
+                $.ajax({
+                    type: "POST",
+                    url: "/ResumeSettings/UpdateHistory/",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function () {
+                        $('#modal-updateHistory').modal('hide');
+                        getHistoryData();
+                        hobbieID = null;
+                        formData = null;
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Tecrübeleriniz',
+                            text: 'Tecrübe Başarıyla Güncellendi'
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Tecrübeleriniz',
+                            text: 'Tecrübe güncelleme sırasında bir hata oluştu.'
+                        });
+                    }
+                });
+            });
+        },
+        error: function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Tecrübeleriniz',
+                text: 'Tecrübe verileri getirilirken bir hata oluştu.'
+            });
+        }
+    });
+}
+//WHistory Stop
+//Education Start
+function getEducationData() {
+    $.ajax({
+        type: "GET",
+        url: "/ResumeSettings/GetEducation",
+        success: function (data) {
+            var card = '';
+            $('#education-cards').empty();
+            $.each(data, function (i, education) {
+                card = '<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">' +
+                    '<div class="card bg-light d-flex flex-fill">' +
+                    '<div class="card-header text-muted border-bottom-0 text-center"><b>Okul Adı</b>:' + education.schoolName + '</div>' +
+                    '<div class="card-body pt-0">' +
+                    '<div class="row">' +
+                    '<div class="col-12">' +
+                    '<p class="text-muted text-sm"><b>Giriş Tarihi</b>: ' + education.startDate + '</p>' +
+                    '</div>' +
+                    '<div class="col-12">' +
+                    '<p class="text-muted text-sm"><b>Bitirme Tarihi</b>: ' + education.finishDate + '</p>' +
+                    '</div>' +
+                    '<div class="col-12">' +
+                    '<p class="text-muted text-sm"><b>Bölüm</b>: ' + education.educationBranch + '</p>' +
+                    '</div>' +
+                    '<div class="col-12">' +
+                    '<p class="text-muted text-sm"><b>Okul Açıklaması</b>: ' + education.educationDescription + '</p>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="card-footer">' +
+                    '<div class="text-right">' +
+                    '<div class="btn-group">' +
+                    '<button type="button" class="btn btn-sm btn-warning" onclick="editEducation(' + education.educationID + ')">' +
+                    '<i class="fas fa-edit"></i> Düzenle' +
+                    '</button>' +
+                    '<button type="button" class="btn btn-sm btn-danger" onclick="deleteEducation(' + education.educationID + ')">' +
+                    '<i class="fas fa-trash"></i> Sil' +
+                    '</a>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+                $('#education-cards').append(card);
+            });
+        },
+        error: function () {
+            Swal.fire({
+                icon: 'danger',
+                title: 'Eğitiminiz',
+                text: 'Bir Hata Oluştu Verileri Çekemiyoruz !'
+            });
+        }
+    });
+}
+
+$('#addEducationButton').click(function (e) {
+    e.preventDefault();
+    var formData = new FormData();
+    formData.append('ResumeID', $('#ResumeID').val());
+    formData.append('StartDate', $('#StartDateE').val());
+    formData.append('FinishDate', $('#FinishDateE').val());
+    formData.append('EducationBranch', $('#EducationBranch').val());
+    formData.append('SchoolName', $('#SchoolName').val());
+    formData.append('EducationDescription', $('#EducationDescription').val());
+
+    $.ajax({
+        type: "POST",
+        url: "/ResumeSettings/AddEducation",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            $('#modal-addEducation').modal('hide');
+            console.log(data);
+            getEducationData();
+            Swal.fire({
+                icon: 'success',
+                title: 'Eğitiminiz',
+                text: 'Eğitim Başarıyla Eklendi'
+            });
+        },
+        error: function (xhr, status, error) {
+            Swal.fire({
+                icon: 'danger',
+                title: 'Eğitiminiz',
+                text: 'Eğitim Hata Oluştu !'
+            });
+        }
+    });
+});
+
+function deleteEducation(educationID) {
+    Swal.fire({
+        title: 'Emin misiniz?',
+        text: "Bu işlemi geri alamazsınız!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Evet, sil!',
+        cancelButtonText: 'İptal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/ResumeSettings/DeleteEducation',
+                data: { 'id': educationID },
+                type: 'POST',
+                success: function (data) {
+                    if (data.success) {
+                        Swal.fire(
+                            'Silindi!',
+                            'Eğitim başarıyla silindi.',
+                            'success'
+                        ).then(() => {
+                            getEducationData();
+                        });
+                    } else {
+                        Swal.fire(
+                            'Hata!',
+                            'Eğitim silinirken bir hata oluştu. 1',
+                            'error'
+                        );
+                    }
+                },
+                error: function () {
+                    Swal.fire(
+                        'Hata!',
+                        'Eğitim silinirken bir hata oluştu. 2',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+}
+
+function editEducation(educationID) {
+    $.ajax({
+        type: "GET",
+        url: "/ResumeSettings/GetEducationById/" + educationID,
+        success: function (data) {
+            $('#StartDateU').val(data.startDate);
+            $('#FinishDateU').val(data.finishDate);
+            $('#EducationBranchU').val(data.educationBranch);
+            $('#SchoolNameU').val(data.schoolName);
+            $('#EducationDescriptionU').val(data.educationDescription);
+            $('#EducationID').val(data.educationID);
+
+            $('#modal-updateEducation').modal('show');
+
+            $('#update-education-form').on('submit', function (e) {
+                e.preventDefault();
+                var formData = new FormData();
+                formData.append('StartDate', $('#StartDateEU').val());
+                formData.append('FinishDate', $('#FinishDateEU').val());
+                formData.append('EducationBranch', $('#EducationBranchU').val());
+                formData.append('SchoolName', $('#SchoolNameU').val());
+                formData.append('EducationDescription', $('#EducationDescriptionU').val());
+                formData.append('EducationID', $('#EducationID').val());
+
+                $.ajax({
+                    type: "POST",
+                    url: "/ResumeSettings/UpdateEducation/",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function () {
+                        $('#modal-updateEducation').modal('hide');
+                        getEducationData();
+                        hobbieID = null;
+                        formData = null;
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Eğitiminiz',
+                            text: 'Eğitim Başarıyla Güncellendi'
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Eğitiminiz',
+                            text: 'Eğitim güncelleme sırasında bir hata oluştu.'
+                        });
+                    }
+                });
+            });
+        },
+        error: function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Eğitiminiz',
+                text: 'Eğitim verileri getirilirken bir hata oluştu.'
+            });
+        }
+    });
+}
+//Education Stop

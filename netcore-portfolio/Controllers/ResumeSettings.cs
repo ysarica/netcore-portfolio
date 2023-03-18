@@ -526,5 +526,101 @@ namespace netcore_portfolio.Controllers
 
         }
         //Hobbies Finish
+        //WHistory Start
+        public IActionResult GetHistory()
+        {
+            var history = _context.WorkHistory.Where(x => x.ResumeID == 1).ToList();
+
+            return Json(history);
+        }
+        [HttpPost]
+        public IActionResult AddHistory([FromForm] WorkHistory history)
+        {
+                _context.WorkHistory.Add(history);
+                _context.SaveChanges();
+                return Json(new { success = true });          
+        }
+        [HttpPost]
+        public IActionResult DeleteHistory(int id)
+        {
+            var history = _context.WorkHistory.FirstOrDefault(s => s.WorkHistoryID == id);
+            if (history != null)
+            {              
+                _context.WorkHistory.Remove(history);
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
+        [HttpGet]
+        public IActionResult GetHistoryById(int id)
+        {
+            var history = _context.WorkHistory.FirstOrDefault(s => s.WorkHistoryID == id && s.ResumeID == 1);
+            return Json(history);
+        }
+        [HttpPost]
+        public IActionResult UpdateHistory([FromForm] WorkHistory history)
+        {
+            var oldHistory = _context.WorkHistory.FirstOrDefault(x => x.WorkHistoryID == history.WorkHistoryID);
+
+            oldHistory.StartDate = history.StartDate;
+            oldHistory.FinishDate = history.FinishDate;
+            oldHistory.WorkTitle = history.WorkTitle;
+            oldHistory.CompanyName = history.CompanyName;
+            oldHistory.WorkDescription = history.WorkDescription;
+
+            _context.SaveChanges();
+            return Json(new { success = true });
+
+        }
+        //WHistory Finish
+        //Education Start
+        public IActionResult GetEducation()
+        {
+            var education = _context.Education.Where(x => x.ResumeID == 1).ToList();
+
+            return Json(education);
+        }
+        [HttpPost]
+        public IActionResult AddEducation([FromForm] Education education)
+        {
+            _context.Education.Add(education);
+            _context.SaveChanges();
+            return Json(new { success = true });
+        }
+        [HttpPost]
+        public IActionResult DeleteEducation(int id)
+        {
+            var education = _context.Education.FirstOrDefault(s => s.EducationID == id);
+            if (education != null)
+            {
+                _context.Education.Remove(education);
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
+        [HttpGet]
+        public IActionResult GetEducationById(int id)
+        {
+            var education = _context.Education.FirstOrDefault(s => s.EducationID == id && s.ResumeID == 1);
+            return Json(education);
+        }
+        [HttpPost]
+        public IActionResult UpdateEducation([FromForm] Education education)
+        {
+            var oldEducation = _context.Education.FirstOrDefault(x => x.EducationID == education.EducationID);
+
+            oldEducation.StartDate = education.StartDate;
+            oldEducation.FinishDate = education.FinishDate;
+            oldEducation.EducationBranch = education.EducationBranch;
+            oldEducation.SchoolName = education.SchoolName;
+            oldEducation.EducationDescription = education.EducationDescription;
+
+            _context.SaveChanges();
+            return Json(new { success = true });
+
+        }
+        //Education Finish
     }
 }
