@@ -31,5 +31,7 @@ namespace netcore_portfolio.Models
         public  DbSet<WorkPartners> WorkPartners { get; set; }
         public  DbSet<WorkProces> WorkProces { get; set; }
         public DbSet<SmtpConfigs> SmtpConfigs { get; set; }
+        public  DbSet<Skill> Skill { get; set; }
+        public  DbSet<SkillCategory> SkillCategory { get; set; }
     }
 }
