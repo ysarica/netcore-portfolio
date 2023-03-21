@@ -622,5 +622,58 @@ namespace netcore_portfolio.Controllers
 
         }
         //Education Finish
+        //SkillCategory Start
+        public IActionResult GetSkillCategory()
+        {
+            var skillcategory = _context.SkillCategory.Where(x => x.ResumeID == 1).ToList();
+
+            return Json(skillcategory);
+        }
+        public IActionResult GetSkill()
+        {
+            var skill = _context.Skill.ToList();
+            return Json(skill);
+        }
+        [HttpPost]
+        public IActionResult AddSkillCategory([FromForm] Education education)
+        {
+            _context.Education.Add(education);
+            _context.SaveChanges();
+            return Json(new { success = true });
+        }
+        [HttpPost]
+        public IActionResult DeleteSkillCategory(int id)
+        {
+            var education = _context.Education.FirstOrDefault(s => s.EducationID == id);
+            if (education != null)
+            {
+                _context.Education.Remove(education);
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
+        [HttpGet]
+        public IActionResult GetSkillCategoryById(int id)
+        {
+            var education = _context.Education.FirstOrDefault(s => s.EducationID == id && s.ResumeID == 1);
+            return Json(education);
+        }
+        [HttpPost]
+        public IActionResult UpdateSkillCategory([FromForm] Education education)
+        {
+            var oldEducation = _context.Education.FirstOrDefault(x => x.EducationID == education.EducationID);
+
+            oldEducation.StartDate = education.StartDate;
+            oldEducation.FinishDate = education.FinishDate;
+            oldEducation.EducationBranch = education.EducationBranch;
+            oldEducation.SchoolName = education.SchoolName;
+            oldEducation.EducationDescription = education.EducationDescription;
+
+            _context.SaveChanges();
+            return Json(new { success = true });
+
+        }
+        //SkillCategory Finish
     }
 }

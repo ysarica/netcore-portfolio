@@ -1295,3 +1295,75 @@ function editEducation(educationID) {
     });
 }
 //Education Stop
+//SkillCategory Start
+function getSkillCategoryData() {
+    $.ajax({
+        url: '/ResumeSettings/GetSkillCategory',
+        type: 'GET',
+        success: function (categories) {
+            for (var i = 0; i < categories.length; i++) {
+                var category = categories[i];
+
+
+                var card= '<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">' +
+                    '<div class="card bg-light d-flex flex-fill">' +
+                    '<div class="card-header text-muted border-bottom-0 text-center"><b>Yetenek Set Adı</b>:' + category.scName + '</div>' +
+                    '<div class="card-body pt-0">' +
+                    '<div class="row" id="category_' + category.scid+'_list" >'+
+                    '</div>' +
+                    '</div>' +
+                    '<div class="card-footer">' +
+                    '<div class="text-right">' +
+                    '<div class="btn-group">' +
+                    '<button type="button" class="btn btn-sm btn-warning" onclick="editEducation(' + category.scid + ')">' +
+                    '<i class="fas fa-edit"></i> Düzenle' +
+                    '</button>' +
+                    '<button type="button" class="btn btn-sm btn-danger" onclick="deleteEducation(' + category.scid + ')">' +
+                    '<i class="fas fa-trash"></i> Sil' +
+                    '</button>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+                $('#skillCategory-cards').append(card);               
+            }
+         
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+}
+//SkillCategory Stop
+//Skill Start
+function getSkillData() {
+    $.ajax({
+        url: '/ResumeSettings/GetSkill/',
+        type: 'GET',
+        success: function (skills) {
+            for (var j = 0; j < skills.length; j++) {
+                var skill = skills[j];
+                cardItem = '<div class="col-4" > ' +
+                    '<p class="text-muted text-sm"><b>Yetenek</b>: ' + skill.skillName + '</p>' +
+                    '</div>' +
+                    '<div class="col-4">' +
+                    '<p class="text-muted text-sm"><b>Yüzde</b>: ' + skill.skillDegre + '</p>' +
+                    '</div>' +
+                    '<div class="col-4">' +
+                    '<button type="button" class="btn btn-sm btn-danger" onclick="deleteSkill(' + skill.skillID + ')">' +
+                    '<i class="fas fa-trash"></i>' +
+                    '</button>' +
+                    '</div>';
+                $('#category_' + skill.scid + '_list').append(cardItem);
+
+            }
+
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+        }
+    });
+
+}
+//Skill Stop
