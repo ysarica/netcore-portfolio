@@ -1335,6 +1335,43 @@ function getSkillCategoryData() {
         }
     });
 }
+
+$('#addSkillCategoryButton').click(function (e) {
+    e.preventDefault();
+    var formData = new FormData();
+    formData.append('ResumeID', $('#ResumeID').val());
+    formData.append('StartDate', $('#StartDate').val());
+    formData.append('FinishDate', $('#FinishDate').val());
+    formData.append('WorkTitle', $('#WorkTitle').val());
+    formData.append('CompanyName', $('#CompanyName').val());
+    formData.append('WorkDescription', $('#WorkDescription').val());
+
+    $.ajax({
+        type: "POST",
+        url: "/ResumeSettings/AddHistory",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            $('#modal-addHistory').modal('hide');
+            console.log(data);
+            getHistoryData();
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Tecrübeleriniz',
+                text: 'Tecrübe Başarıyla Eklendi'
+            });
+        },
+        error: function (xhr, status, error) {
+            Swal.fire({
+                icon: 'danger',
+                title: 'Tecrübeleriniz',
+                text: 'Bir Hata Oluştu !'
+            });
+        }
+    });
+});
 //SkillCategory Stop
 //Skill Start
 function getSkillData() {
