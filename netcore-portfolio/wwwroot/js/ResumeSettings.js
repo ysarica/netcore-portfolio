@@ -1301,6 +1301,8 @@ function getSkillCategoryData() {
         url: '/ResumeSettings/GetSkillCategory',
         type: 'GET',
         success: function (categories) {
+            $('#skillCategory-cards').empty();
+
             for (var i = 0; i < categories.length; i++) {
                 var category = categories[i];
 
@@ -1315,11 +1317,14 @@ function getSkillCategoryData() {
                     '<div class="card-footer">' +
                     '<div class="text-right">' +
                     '<div class="btn-group">' +
-                    '<button type="button" class="btn btn-sm btn-warning" onclick="editEducation(' + category.scid + ')">' +
-                    '<i class="fas fa-edit"></i> Düzenle' +
+                    '<button type="button" class="btn btn-sm btn-success" onclick="addSkill(' + category.scid + ')">' +
+                    '<i class="fas fa-plus"></i> Yetenek Ekle' +
                     '</button>' +
-                    '<button type="button" class="btn btn-sm btn-danger" onclick="deleteEducation(' + category.scid + ')">' +
-                    '<i class="fas fa-trash"></i> Sil' +
+                    '<button type="button" class="btn btn-sm btn-warning" onclick="editSkillCategory(' + category.scid + ')">' +
+                    '<i class="fas fa-edit"></i>' +
+                    '</button>' +
+                    '<button type="button" class="btn btn-sm btn-danger" onclick="deleteSkillCategory(' + category.scid + ')">' +
+                    '<i class="fas fa-trash"></i>' +
                     '</button>' +
                     '</div>' +
                     '</div>' +
@@ -1328,7 +1333,7 @@ function getSkillCategoryData() {
                     '</div>';
                 $('#skillCategory-cards').append(card);               
             }
-         
+            getSkillData();
         },
         error: function (xhr, status, error) {
             console.log(error);
@@ -1340,27 +1345,23 @@ $('#addSkillCategoryButton').click(function (e) {
     e.preventDefault();
     var formData = new FormData();
     formData.append('ResumeID', $('#ResumeID').val());
-    formData.append('StartDate', $('#StartDate').val());
-    formData.append('FinishDate', $('#FinishDate').val());
-    formData.append('WorkTitle', $('#WorkTitle').val());
-    formData.append('CompanyName', $('#CompanyName').val());
-    formData.append('WorkDescription', $('#WorkDescription').val());
+    formData.append('SCName', $('#SCName').val());
 
     $.ajax({
         type: "POST",
-        url: "/ResumeSettings/AddHistory",
+        url: "/ResumeSettings/AddSkillCategory",
         data: formData,
         processData: false,
         contentType: false,
         success: function (data) {
-            $('#modal-addHistory').modal('hide');
+            $('#modal-addSkillCategory').modal('hide');
             console.log(data);
-            getHistoryData();
+            getSkillCategoryData();
 
             Swal.fire({
                 icon: 'success',
-                title: 'Tecrübeleriniz',
-                text: 'Tecrübe Başarıyla Eklendi'
+                title: 'Yetenek Seti',
+                text: 'Yetenek Seti Başarıyla Eklendi'
             });
         },
         error: function (xhr, status, error) {
@@ -1372,6 +1373,105 @@ $('#addSkillCategoryButton').click(function (e) {
         }
     });
 });
+
+function deleteSkillCategory(scid) {
+    Swal.fire({
+        title: 'Emin misiniz?',
+        text: "Bu işlemi geri alamazsınız!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Evet, sil!',
+        cancelButtonText: 'İptal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/ResumeSettings/DeleteSkillCategory',
+                data: { 'id': scid },
+                type: 'POST',
+                success: function (data) {
+                    if (data.success) {
+                        Swal.fire(
+                            'Silindi!',
+                            'Yetenek Seti başarıyla silindi.',
+                            'success'
+                        ).then(() => {
+                            getSkillCategoryData();
+                        });
+                    } else {
+                        Swal.fire(
+                            'Hata!',
+                            'Yetenek Seti silinirken bir hata oluştu. 1',
+                            'error'
+                        );
+                    }
+                },
+                error: function () {
+                    Swal.fire(
+                        'Hata!',
+                        'Yetenek Seti silinirken bir hata oluştu. 2',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+}
+
+function editSkillCategory(scid) {
+    $.ajax({
+        type: "GET",
+        url: "/ResumeSettings/GetSkillCategoryById/" + scid,
+        success: function (data) {
+
+            $('#SCNameU').val(data.scName);
+            $('#SCID').val(data.scid);
+
+            $('#modal-updateSkillCategory').modal('show');
+
+            $('#update-skillCategory-form').on('submit', function (e) {
+                e.preventDefault();
+                var formData = new FormData();
+                formData.append('SCName', $('#SCNameU').val());
+                formData.append('SCID', $('#SCID').val());
+
+                $.ajax({
+                    type: "POST",
+                    url: "/ResumeSettings/UpdateSkillCategory/",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function () {
+                        $('#modal-updateSkillCategory').modal('hide');
+                        getSkillCategoryData();
+                        hobbieID = null;
+                        formData = null;
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Yetenek Seti',
+                            text: 'Yetenek Seti Başarıyla Güncellendi'
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Yetenek Seti',
+                            text: 'Yetenek Seti güncelleme sırasında bir hata oluştu.'
+                        });
+                    }
+                });
+            });
+        },
+        error: function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Yetenek Seti',
+                text: 'Yetenek Seti verileri getirilirken bir hata oluştu.'
+            });
+        }
+    });
+}
 //SkillCategory Stop
 //Skill Start
 function getSkillData() {
@@ -1392,6 +1492,7 @@ function getSkillData() {
                     '<i class="fas fa-trash"></i>' +
                     '</button>' +
                     '</div>';
+                
                 $('#category_' + skill.scid + '_list').append(cardItem);
 
             }

@@ -629,25 +629,20 @@ namespace netcore_portfolio.Controllers
 
             return Json(skillcategory);
         }
-        public IActionResult GetSkill()
-        {
-            var skill = _context.Skill.ToList();
-            return Json(skill);
-        }
         [HttpPost]
-        public IActionResult AddSkillCategory([FromForm] Education education)
+        public IActionResult AddSkillCategory([FromForm] SkillCategory skillCategory)
         {
-            _context.Education.Add(education);
+            _context.SkillCategory.Add(skillCategory);
             _context.SaveChanges();
             return Json(new { success = true });
         }
         [HttpPost]
         public IActionResult DeleteSkillCategory(int id)
         {
-            var education = _context.Education.FirstOrDefault(s => s.EducationID == id);
-            if (education != null)
+            var skillCategory = _context.SkillCategory.FirstOrDefault(s => s.SCID == id);
+            if (skillCategory != null)
             {
-                _context.Education.Remove(education);
+                _context.SkillCategory.Remove(skillCategory);
                 _context.SaveChanges();
                 return Json(new { success = true });
             }
@@ -656,24 +651,26 @@ namespace netcore_portfolio.Controllers
         [HttpGet]
         public IActionResult GetSkillCategoryById(int id)
         {
-            var education = _context.Education.FirstOrDefault(s => s.EducationID == id && s.ResumeID == 1);
-            return Json(education);
+            var skillCategory = _context.SkillCategory.FirstOrDefault(s => s.SCID == id && s.ResumeID == 1);
+            return Json(skillCategory);
         }
         [HttpPost]
-        public IActionResult UpdateSkillCategory([FromForm] Education education)
+        public IActionResult UpdateSkillCategory([FromForm] SkillCategory skillCategory)
         {
-            var oldEducation = _context.Education.FirstOrDefault(x => x.EducationID == education.EducationID);
+            var oldSkillCategory = _context.SkillCategory.FirstOrDefault(x => x.SCID == skillCategory.SCID);
 
-            oldEducation.StartDate = education.StartDate;
-            oldEducation.FinishDate = education.FinishDate;
-            oldEducation.EducationBranch = education.EducationBranch;
-            oldEducation.SchoolName = education.SchoolName;
-            oldEducation.EducationDescription = education.EducationDescription;
-
+            oldSkillCategory.SCName = skillCategory.SCName;
             _context.SaveChanges();
             return Json(new { success = true });
 
         }
         //SkillCategory Finish
+        public IActionResult GetSkill()
+        {
+            var skill = _context.Skill.ToList();
+            return Json(skill);
+        }
+        
+        
     }
 }

@@ -15,6 +15,6 @@ namespace netcore_portfolio.Models
 
         public int? SkillDegre { get; set; }
 
-        public virtual SkillCategory SkillCategory { get; set; }
+        public  SkillCategory SkillCategory { get; set; }
     }
 }
