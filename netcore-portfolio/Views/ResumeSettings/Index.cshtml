@@ -386,7 +386,7 @@
             <form id="hobbie-form">
                 <input type="text" hidden value="1" id="ResumeID" name="ResumeID" />
                 <div class="modal-body">
-                   
+
                     <div class="form-group">
                         <label for="title">Yetenek Seti Adı:</label>
                         <input type="text" class="form-control" id="SCName" name="SCName" required>
@@ -416,12 +416,12 @@
             <form id="update-skillCategory-form">
                 <div class="modal-body">
                     <input type="hidden" id="SCID" name="SCID" />
-                 
+
                     <div class="form-group">
                         <label for="title">Yetenek Seti Adı:</label>
                         <input type="text" class="form-control" id="SCNameU" name="SCNameU" required>
                     </div>
-                 
+
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
@@ -434,6 +434,40 @@
     <!-- /.modal-dialog -->
 </div>
 <!--User skillCategory Update Modal Finish-->
+<!--User skill Add Modal Start-->
+<div class="modal fade" id="modal-addSkill">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Yetenek Ekleme</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="add-skill-form">
+                <div class="modal-body">
+                    <input type="hidden" id="SCIDFK" name="SCID" />
+
+                    <div class="form-group">
+                        <label for="title">Yetenek Adı:</label>
+                        <input type="text" class="form-control" id="SkillName" name="SkillName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Yetenek Yüzdesi:</label>
+                        <input type="number" class="form-control" id="SkillDegre" name="SkillDegre" required>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                    <button type="submit" class="btn btn-success">Kaydet</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!--User skill Add Modal Finish-->
 <!--User Service Add Modal Start-->
 <div class="modal fade" id="modal-addService">
     <div class="modal-dialog">

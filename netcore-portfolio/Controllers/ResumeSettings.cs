@@ -640,6 +640,16 @@ namespace netcore_portfolio.Controllers
         public IActionResult DeleteSkillCategory(int id)
         {
             var skillCategory = _context.SkillCategory.FirstOrDefault(s => s.SCID == id);
+            var skill = _context.Skill.Where(x => x.SCID == skillCategory.SCID).ToList();
+            if (skill!=null)
+            {
+                foreach (var s in skill)
+                {
+                    var deleteSkill = _context.Skill.FirstOrDefault(x => x.SkillID == s.SkillID);
+                    _context.Skill.Remove(deleteSkill);
+                    _context.SaveChanges();
+                }
+            }
             if (skillCategory != null)
             {
                 _context.SkillCategory.Remove(skillCategory);
@@ -670,7 +680,25 @@ namespace netcore_portfolio.Controllers
             var skill = _context.Skill.ToList();
             return Json(skill);
         }
-        
-        
+        [HttpPost]
+        public IActionResult AddSkill([FromForm] Skill skill)
+        {
+            _context.Skill.Add(skill);
+            _context.SaveChanges();
+            return Json(new { success = true });
+        }
+        [HttpPost]
+        public IActionResult DeleteSkill(int id)
+        {
+            var skill = _context.Skill.FirstOrDefault(s => s.SkillID == id);
+            if (skill != null)
+            {
+                _context.Skill.Remove(skill);
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
+
     }
 }
