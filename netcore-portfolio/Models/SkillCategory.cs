@@ -15,8 +15,8 @@ namespace netcore_portfolio.Models
 
         public int? ResumeID { get; set; }
 
-        public virtual Resume Resume { get; set; }
+        public  Resume Resume { get; set; }
 
-        public virtual ICollection<Skill> Skill { get; set; }
+        public  ICollection<Skill> Skill { get; set; }
     }
 }

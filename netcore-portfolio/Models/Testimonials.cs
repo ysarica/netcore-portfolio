@@ -20,7 +20,7 @@ namespace netcore_portfolio.Models
         public string TName { get; set; }
 
         [StringLength(250)]
-        public string TCoımpany { get; set; }
+        public string TCompany { get; set; }
 
         public string TDescription { get; set; }
 

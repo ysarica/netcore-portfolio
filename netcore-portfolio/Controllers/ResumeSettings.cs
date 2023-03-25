@@ -187,14 +187,92 @@ namespace netcore_portfolio.Controllers
 
             return Json(new { success = true });
         }
+        //SkillCategory Start
+        public IActionResult GetSkillCategory()
+        {
+            var skillcategory = _context.SkillCategory.Where(x => x.ResumeID == 1).ToList();
 
+            return Json(skillcategory);
+        }
+        [HttpPost]
+        public IActionResult AddSkillCategory([FromForm] SkillCategory skillCategory)
+        {
+            _context.SkillCategory.Add(skillCategory);
+            _context.SaveChanges();
+            return Json(new { success = true });
+        }
+        [HttpPost]
+        public IActionResult DeleteSkillCategory(int id)
+        {
+            var skillCategory = _context.SkillCategory.FirstOrDefault(s => s.SCID == id);
+            var skill = _context.Skill.Where(x => x.SCID == skillCategory.SCID).ToList();
+            if (skill != null)
+            {
+                foreach (var s in skill)
+                {
+                    var deleteSkill = _context.Skill.FirstOrDefault(x => x.SkillID == s.SkillID);
+                    _context.Skill.Remove(deleteSkill);
+                    _context.SaveChanges();
+                }
+            }
+            if (skillCategory != null)
+            {
+                _context.SkillCategory.Remove(skillCategory);
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
+        [HttpGet]
+        public IActionResult GetSkillCategoryById(int id)
+        {
+            var skillCategory = _context.SkillCategory.FirstOrDefault(s => s.SCID == id && s.ResumeID == 1);
+            return Json(skillCategory);
+        }
+        [HttpPost]
+        public IActionResult UpdateSkillCategory([FromForm] SkillCategory skillCategory)
+        {
+            var oldSkillCategory = _context.SkillCategory.FirstOrDefault(x => x.SCID == skillCategory.SCID);
+
+            oldSkillCategory.SCName = skillCategory.SCName;
+            _context.SaveChanges();
+            return Json(new { success = true });
+
+        }
+        //SkillCategory Finish
+        //Skill Start
+        public IActionResult GetSkill()
+        {
+            var skill = _context.Skill.ToList();
+            return Json(skill);
+        }
+        [HttpPost]
+        public IActionResult AddSkill([FromForm] Skill skill)
+        {
+            _context.Skill.Add(skill);
+            _context.SaveChanges();
+            return Json(new { success = true });
+        }
+        [HttpPost]
+        public IActionResult DeleteSkill(int id)
+        {
+            var skill = _context.Skill.FirstOrDefault(s => s.SkillID == id);
+            if (skill != null)
+            {
+                _context.Skill.Remove(skill);
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
+        //Skill Finish
+        //Service Start
         public IActionResult GetService()
         {
             var service = _context.Service.Where(x => x.ResumeID == 1).ToList();
 
             return Json(service);
         }
-
         [HttpPost]
         public async Task<IActionResult> AddService([FromForm] Service service, IFormFile ServiceImage)
         {
@@ -622,83 +700,52 @@ namespace netcore_portfolio.Controllers
 
         }
         //Education Finish
-        //SkillCategory Start
-        public IActionResult GetSkillCategory()
+        //Testimonial Start
+        public IActionResult GetTestimonial()
         {
-            var skillcategory = _context.SkillCategory.Where(x => x.ResumeID == 1).ToList();
+            var testimonials = _context.Testimonials.Where(x => x.ResumeID == 1).ToList();
 
-            return Json(skillcategory);
+            return Json(testimonials);
         }
         [HttpPost]
-        public IActionResult AddSkillCategory([FromForm] SkillCategory skillCategory)
+        public IActionResult AddTestimonial([FromForm] Testimonials testimonials)
         {
-            _context.SkillCategory.Add(skillCategory);
+            _context.Testimonials.Add(testimonials);
             _context.SaveChanges();
             return Json(new { success = true });
         }
         [HttpPost]
-        public IActionResult DeleteSkillCategory(int id)
+        public IActionResult DeleteTestimonial(int id)
         {
-            var skillCategory = _context.SkillCategory.FirstOrDefault(s => s.SCID == id);
-            var skill = _context.Skill.Where(x => x.SCID == skillCategory.SCID).ToList();
-            if (skill!=null)
+            var testimonials = _context.Testimonials.FirstOrDefault(s => s.TestimonialID == id);
+            if (testimonials != null)
             {
-                foreach (var s in skill)
-                {
-                    var deleteSkill = _context.Skill.FirstOrDefault(x => x.SkillID == s.SkillID);
-                    _context.Skill.Remove(deleteSkill);
-                    _context.SaveChanges();
-                }
-            }
-            if (skillCategory != null)
-            {
-                _context.SkillCategory.Remove(skillCategory);
+                _context.Testimonials.Remove(testimonials);
                 _context.SaveChanges();
                 return Json(new { success = true });
             }
             return Json(new { success = false });
         }
         [HttpGet]
-        public IActionResult GetSkillCategoryById(int id)
+        public IActionResult GetTestimonialById(int id)
         {
-            var skillCategory = _context.SkillCategory.FirstOrDefault(s => s.SCID == id && s.ResumeID == 1);
-            return Json(skillCategory);
+            var testimonials = _context.Testimonials.FirstOrDefault(s => s.TestimonialID == id && s.ResumeID == 1);
+            return Json(testimonials);
         }
         [HttpPost]
-        public IActionResult UpdateSkillCategory([FromForm] SkillCategory skillCategory)
+        public IActionResult UpdateTestimonial([FromForm] Testimonials testimonials)
         {
-            var oldSkillCategory = _context.SkillCategory.FirstOrDefault(x => x.SCID == skillCategory.SCID);
+            var oldTestimonials = _context.Testimonials.FirstOrDefault(x => x.TestimonialID == testimonials.TestimonialID);
 
-            oldSkillCategory.SCName = skillCategory.SCName;
+            oldTestimonials.TName = testimonials.TName;
+            oldTestimonials.TCompany = testimonials.TCompany;
+            oldTestimonials.TDescription = testimonials.TDescription;
+
             _context.SaveChanges();
             return Json(new { success = true });
 
         }
-        //SkillCategory Finish
-        public IActionResult GetSkill()
-        {
-            var skill = _context.Skill.ToList();
-            return Json(skill);
-        }
-        [HttpPost]
-        public IActionResult AddSkill([FromForm] Skill skill)
-        {
-            _context.Skill.Add(skill);
-            _context.SaveChanges();
-            return Json(new { success = true });
-        }
-        [HttpPost]
-        public IActionResult DeleteSkill(int id)
-        {
-            var skill = _context.Skill.FirstOrDefault(s => s.SkillID == id);
-            if (skill != null)
-            {
-                _context.Skill.Remove(skill);
-                _context.SaveChanges();
-                return Json(new { success = true });
-            }
-            return Json(new { success = false });
-        }
+        //Testimonial Finish
 
     }
 }
