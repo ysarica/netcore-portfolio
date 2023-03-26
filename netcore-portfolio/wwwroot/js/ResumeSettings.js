@@ -41,6 +41,7 @@ function getResumeData() {
             $('#workHistoryState').bootstrapSwitch('state', resume.workHistoryState);
             $('#educationState').bootstrapSwitch('state', resume.educationState);
             $('#testimonialState').bootstrapSwitch('state', resume.testimonialState);
+            $('#skillCategory').bootstrapSwitch('state', resume.skillCategory);
 
         },
         error: function () {
@@ -1615,4 +1616,188 @@ function editEducation(educationID) {
     });
 }
 //Education Stop
+//Testimonial Start
+function getTestimonialData() {
+    $.ajax({
+        type: "GET",
+        url: "/ResumeSettings/GetTestimonial",
+        success: function (data) {
+            var card = '';
+            $('#testimonial-cards').empty();
+            $.each(data, function (i, testimonial) {
+                card = '<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">' +
+                    '<div class="card bg-light d-flex flex-fill">' +
+                    '<div class="card-header text-muted border-bottom-0 text-center"><b>Referans Adı</b>:' + testimonial.tName + '</div>' +
+                    '<div class="card-body pt-0">' +
+                    '<div class="row">' +
+                    '<div class="col-12">' +
+                    '<p class="text-muted text-sm"><b>Şirket Adı</b>: ' + testimonial.tCompany + '</p>' +
+                    '</div>' +
+                    '<div class="col-12">' +
+                    '<p class="text-muted text-sm"><b>Referans Açıklaması</b>: ' + testimonial.tDescription + '</p>' +
+                    '</div>' +      
+                    '</div>' +
+                    '</div>' +
+                    '<div class="card-footer">' +
+                    '<div class="text-right">' +
+                    '<div class="btn-group">' +
+                    '<button type="button" class="btn btn-sm btn-warning" onclick="editTestimonial(' + testimonial.testimonialID + ')">' +
+                    '<i class="fas fa-edit"></i> Düzenle' +
+                    '</button>' +
+                    '<button type="button" class="btn btn-sm btn-danger" onclick="deleteTestimonial(' + testimonial.testimonialID + ')">' +
+                    '<i class="fas fa-trash"></i> Sil' +
+                    '</a>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+                $('#testimonial-cards').append(card);
+            });
+        },
+        error: function () {
+            Swal.fire({
+                icon: 'danger',
+                title: 'Referanslarınız',
+                text: 'Bir Hata Oluştu Verileri Çekemiyoruz !'
+            });
+        }
+    });
+}
 
+$('#addTestimonialButton').click(function (e) {
+    e.preventDefault();
+    var formData = new FormData();
+    formData.append('ResumeID', $('#ResumeID').val());
+    formData.append('TName', $('#TName').val());
+    formData.append('TCompany', $('#TCompany').val());
+    formData.append('TDescription', $('#TDescription').val());
+
+    $.ajax({
+        type: "POST",
+        url: "/ResumeSettings/AddTestimonial",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+            $('#modal-addTestimonial').modal('hide');
+            console.log(data);
+            getTestimonialData();
+            Swal.fire({
+                icon: 'success',
+                title: 'Referanslarınız',
+                text: 'Referans Başarıyla Eklendi'
+            });
+        },
+        error: function (xhr, status, error) {
+            Swal.fire({
+                icon: 'danger',
+                title: 'Referanslarınız',
+                text: 'Referans Hata Oluştu !'
+            });
+        }
+    });
+});
+
+function deleteTestimonial(testimonialID) {
+    Swal.fire({
+        title: 'Emin misiniz?',
+        text: "Bu işlemi geri alamazsınız!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Evet, sil!',
+        cancelButtonText: 'İptal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/ResumeSettings/DeleteTestimonial',
+                data: { 'id': testimonialID },
+                type: 'POST',
+                success: function (data) {
+                    if (data.success) {
+                        Swal.fire(
+                            'Silindi!',
+                            'Referans başarıyla silindi.',
+                            'success'
+                        ).then(() => {
+                            getTestimonialData();
+                        });
+                    } else {
+                        Swal.fire(
+                            'Hata!',
+                            'Referans silinirken bir hata oluştu. 1',
+                            'error'
+                        );
+                    }
+                },
+                error: function () {
+                    Swal.fire(
+                        'Hata!',
+                        'Referans silinirken bir hata oluştu. 2',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+}
+
+function editTestimonial(testimonialID) {
+    $.ajax({
+        type: "GET",
+        url: "/ResumeSettings/GetTestimonialById/" + testimonialID,
+        success: function (data) {
+            $('#TNameU').val(data.tName);
+            $('#TCompanyU').val(data.tCompany);
+            $('#TDescriptionU').val(data.tDescription);
+            $('#TestimonialID').val(data.testimonialID);
+
+            $('#modal-updateTestimonial').modal('show');
+
+            $('#update-testimonial-form').on('submit', function (e) {
+                e.preventDefault();
+                var formData = new FormData();
+                formData.append('TName', $('#TNameU').val());
+                formData.append('TCompany', $('#TCompanyU').val());
+                formData.append('TDescription', $('#TDescriptionU').val());
+                formData.append('TestimonialID', $('#TestimonialID').val());
+
+                $.ajax({
+                    type: "POST",
+                    url: "/ResumeSettings/UpdateTestimonial/",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function () {
+                        $('#modal-updateTestimonial').modal('hide');
+                        getTestimonialData();
+                        hobbieID = null;
+                        formData = null;
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Referanslar',
+                            text: 'Referans Başarıyla Güncellendi'
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Referanslar',
+                            text: 'Referans güncelleme sırasında bir hata oluştu.'
+                        });
+                    }
+                });
+            });
+        },
+        error: function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Referanslar',
+                text: 'Referanslar verileri getirilirken bir hata oluştu.'
+            });
+        }
+    });
+}
+//Testimonial Stop

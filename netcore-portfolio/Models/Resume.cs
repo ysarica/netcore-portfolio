@@ -13,16 +13,6 @@ namespace netcore_portfolio.Models
     [Table("Resume")]
     public partial class Resume
     {
-        public Resume()
-        {
-            Education = new HashSet<Education>();
-            Hobbies = new HashSet<Hobbies>();
-            Service = new HashSet<Service>();
-            Testimonials = new HashSet<Testimonials>();
-            WorkHistory = new HashSet<WorkHistory>();
-            WorkPartners = new HashSet<WorkPartners>();
-            WorkProces = new HashSet<WorkProces>();
-        }
 
         public int ResumeID { get; set; }
 
@@ -65,6 +55,8 @@ namespace netcore_portfolio.Models
         public bool? EducationState { get; set; }
 
         public bool? TestimonialState { get; set; }
+        public bool? SkillCategoryState { get; set; }
+
 
         public virtual ICollection<Education> Education { get; set; }
 
@@ -79,5 +71,7 @@ namespace netcore_portfolio.Models
         public virtual ICollection<WorkPartners> WorkPartners { get; set; }
 
         public virtual ICollection<WorkProces> WorkProces { get; set; }
+        public virtual ICollection<SkillCategory> SkillCategory { get; set; }
+
     }
 }

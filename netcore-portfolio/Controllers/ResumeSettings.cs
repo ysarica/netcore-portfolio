@@ -111,7 +111,10 @@ namespace netcore_portfolio.Controllers
             {
                 resumeSwitch.TestimonialState = value;
             }
-
+            else if (id == 9)
+            {
+                resumeSwitch.SkillCategoryState = value;
+            }
             _context.SaveChanges();
 
             return Json(new { success = true });
