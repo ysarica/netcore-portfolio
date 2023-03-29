@@ -4,5 +4,99 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>PCategory</h1>
+@section title{ Portfolyo Kategori }
+@section pagetitle{ Portfolyo Kategori}
+@section sitemap{ Portfolyo Kategori}
 
+
+
+<div class="card card-outline card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Portfolyo Kategori İşlemleri </h3>
+
+        <div class="card-tools">
+
+            <div class="btn-group">
+                <a href="/Portfolio/Index/" class="btn btn-secondary">Portfolyo İşlemleri</a>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#modal-addPortfolioCategory"><i class="fa fa-plus"></i> Portfolyo Kategori Ekle </button>
+
+            </div>
+        </div>
+        <!-- /.card-tools -->
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <div class="row" id="pCategory-cards">
+
+
+        </div>
+    </div>
+    <!-- /.card-body -->
+</div>
+
+
+<!--User PortfolioCategory Add Modal Start-->
+<div class="modal fade" id="modal-addPortfolioCategory">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Portfolyo Kategori Ekle</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="PortfolioCategory-form">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="title">Portfolyo Kategori Adı</label>
+                        <input type="text" class="form-control" id="PCategoryName" name="PCategoryName" required>
+                    </div>
+               
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                    <button type="submit" id="addPortfolioCategoryButton" class="btn btn-success">Kaydet</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!--User PortfolioCategory Add Modal Finish-->
+<!--User PortfolioCategory Update Modal Start-->
+<div class="modal fade" id="modal-updatePortfolioCategory">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Portfolyo Kategori Güncelleme</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="update-portfoliocategory-form">
+                <div class="modal-body">
+                    <input type="hidden" id="PCategoryID" name="PCategoryID" />
+                    <div class="form-group">
+                        <label for="title">Portfolyo Kategori Adı:</label>
+                        <input type="text" class="form-control" id="PCategoryNameU" name="PCategoryNameU" required>
+                    </div>                  
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                    <button type="submit" class="btn btn-warning">Güncelle</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!--User PortfolioCategory Update Modal Finish-->
+
+<script src="~/js/Portfolio.js"></script>
+<script>
+    $(document).ready(function () {
+        getPortfolioCategoryData();
+    });
+</script>
