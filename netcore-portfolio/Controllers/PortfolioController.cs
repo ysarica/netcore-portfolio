@@ -64,5 +64,12 @@ namespace netcore_portfolio.Controllers
             return Json(new { success = true });
 
         }
+        //PortfolioCategory Finish
+        public IActionResult GetPortfolio()
+        {
+            var portfolio = _context.Portfolio.ToList();
+
+            return Json(portfolio);
+        }
     }
 }
