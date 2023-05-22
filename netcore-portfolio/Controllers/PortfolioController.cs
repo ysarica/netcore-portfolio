@@ -14,11 +14,7 @@ namespace netcore_portfolio.Controllers
         public PortfolioController(Context context)
         {
             _context = context;
-        }
-        public IActionResult Index()
-        {
-            return View();
-        }
+        }      
         public IActionResult PCategory()
         {
             return View();
@@ -65,11 +61,19 @@ namespace netcore_portfolio.Controllers
 
         }
         //PortfolioCategory Finish
+        //Portfolio Start
+        public IActionResult Index()
+        {
+            return View();
+        }
         public IActionResult GetPortfolio()
         {
             var portfolio = _context.Portfolio.ToList();
 
             return Json(portfolio);
         }
+
+        //Portfolio Finish
+
     }
 }

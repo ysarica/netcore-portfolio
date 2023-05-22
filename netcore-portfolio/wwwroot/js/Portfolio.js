@@ -10,7 +10,7 @@ function getPortfolioCategoryData() {
                 card = '<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">' +
                     '<div class="card bg-light d-flex flex-fill">' +
                     '<div class="card-header text-muted border-bottom-0 text-center">' + pCategory.pCategoryName + '</div>' +
-                   
+
                     '<div class="card-footer">' +
                     '<div class="text-right">' +
                     '<div class="btn-group">' +
@@ -115,10 +115,10 @@ function deletePCategory(pCategoryID) {
     });
 }
 
-function editPCategory(serviceID) {
+function editPCategory(pCategoryID) {
     $.ajax({
         type: "GET",
-        url: "/Portfolio/GetPortfolioCategoryById/" + serviceID,
+        url: "/Portfolio/GetPortfolioCategoryById/" + pCategoryID,
         success: function (data) {
             $('#PCategoryNameU').val(data.pCategoryName);
             $('#PCategoryID').val(data.pCategoryID);
@@ -169,3 +169,51 @@ function editPCategory(serviceID) {
     });
 }
 //PortfolioCategory Finish
+//Portfolio Start
+function getPortfolioData() {
+    $.ajax({
+        type: "GET",
+        url: "/Portfolio/GetPortfolio/",
+        success: function (data) {
+            var card = '';
+            $('#portfolio-cards').empty();
+            $.each(data, function (i, portfolio) {
+                card = '<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">' +
+                    '<div class="card bg-light d-flex flex-fill">' +
+                    '<div class="card-header text-muted border-bottom-0"> Kategori Adı:Kadi </div>' +
+
+                    '<div class="card-body pt-0"> <div class="row"><div class="col-7">' +
+                    '<h2 class="lead"><b>Portfolio Baslik:' + portfolio.+'</b></h2>' +
+                    '<p class="text-muted text-sm"><b>Portfolio Sirket: </b> Şirket </p>' +
+                    '<p class="text-muted text-sm"><b>Portfolio Bitis Tarihi: </b> Tarihi </p>' +
+                    '<p class="text-muted text-sm"><b>Portfolio Kullanılan Teknoloji: </b> Teknoloji </p>' +
+                    '<p class="text-muted text-sm"><b>Portfolio Link : </b> Link </p>' +
+                    '</div><div class="col-5 text-center"><img src="/adminlte/dist/img/user1-128x128.jpg" alt="user-avatar" class="img-circle img-fluid"></div></div></div>' +
+
+                    '<div class="card-footer">' +
+                    '<div class="text-right">' +
+                    '<div class="btn-group">' +
+                    '<button type="button" class="btn btn-sm btn-warning" onclick="editPCategory(' + portfolio.pCategoryID + ')">' +
+                    '<i class="fas fa-edit"></i> Düzenle' +
+                    '</button>' +
+                    '<button type="button" class="btn btn-sm btn-danger" onclick="deletePCategory(' + portfolio.pType + ')">' +
+                    '<i class="fas fa-trash"></i> Sil' +
+                    '</a>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+                $('#portfolio-cards').append(card);
+            });
+        },
+        error: function () {
+            Swal.fire({
+                icon: 'danger',
+                title: 'Portfolyo ',
+                text: 'Bir Hata Oluştu Verileri Çekemiyoruz !'
+            });
+        }
+    });
+}
+//Portfolio Finish
