@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using netcore_portfolio.Models;
 using System;
 using System.Collections.Generic;
@@ -64,13 +65,37 @@ namespace netcore_portfolio.Controllers
         //Portfolio Start
         public IActionResult Index()
         {
+  
             return View();
         }
-        public IActionResult GetPortfolio()
+        public JsonResult GetPortfolio()
         {
-            var portfolio = _context.Portfolio.ToList();
+            var portfolioCategories = _context.PortfolioCategory.Include(pc => pc.Portfolio).ToList();
 
-            return Json(portfolio);
+            var portfolio = _context.Portfolio.ToList();
+            foreach (var port in portfolio)
+            {
+                _context.Entry(port).Reference(p => p.PortfolioCategory).Load();
+            }
+            var portData = _context.Portfolio.Select(p => new
+            {
+                PID = p.PID,
+                PCategoryID = p.PCategoryID,
+                PCategoryName = p.PortfolioCategory.PCategoryName,
+                PType = p.PType,
+                PLink = p.PLink,
+                PImage = p.PImage,
+                PFactoryName = p.PFactoryName,
+                PDeliveryDate = p.PDeliveryDate,
+                PUseService = p.PUseService,
+                PDescription = p.PDescription,
+                PTitle = p.PTitle
+
+            });
+
+            //var portData = _context.Portfolio.Include(x => x.PortfolioCategory).ToList();
+
+            return Json(portData);
         }
 
         //Portfolio Finish

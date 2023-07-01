@@ -24,6 +24,6 @@ namespace netcore_portfolio.Models
         [StringLength(250)]
         public string PCategoryName { get; set; }
 
-        public virtual ICollection<Portfolio> Portfolio { get; set; }
+        public  ICollection<Portfolio> Portfolio { get; set; }
     }
 }

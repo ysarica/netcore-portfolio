@@ -20,7 +20,7 @@ namespace netcore_portfolio.Models
         [Key]
         public int PID { get; set; }
 
-        public int? PCategoryID { get; set; }
+        public int PCategoryID { get; set; }
 
         [StringLength(50)]
         public string PType { get; set; }
@@ -41,8 +41,8 @@ namespace netcore_portfolio.Models
 
         public string PTitle { get; set; }
 
-        public virtual PortfolioCategory PortfolioCategory { get; set; }
+        public  PortfolioCategory PortfolioCategory { get; set; }
 
-        public virtual ICollection<PortfolioImage> PortfolioImage { get; set; }
+        public  ICollection<PortfolioImage> PortfolioImage { get; set; }
     }
 }

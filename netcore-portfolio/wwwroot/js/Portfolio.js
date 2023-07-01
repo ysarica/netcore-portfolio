@@ -19,7 +19,7 @@ function getPortfolioCategoryData() {
                     '</button>' +
                     '<button type="button" class="btn btn-sm btn-danger" onclick="deletePCategory(' + pCategory.pCategoryID + ')">' +
                     '<i class="fas fa-trash"></i> Sil' +
-                    '</a>' +
+                    '</button>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
@@ -177,28 +177,32 @@ function getPortfolioData() {
         success: function (data) {
             var card = '';
             $('#portfolio-cards').empty();
-            $.each(data, function (i, portfolio) {
+            $.each(data, function (i, portData) {
                 card = '<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">' +
                     '<div class="card bg-light d-flex flex-fill">' +
-                    '<div class="card-header text-muted border-bottom-0"> Kategori Adı:Kadi </div>' +
+                    '<div class="card-header text-muted border-bottom-0"> Kategori Adı:' + portData.pCategoryName + '</div>' +
 
                     '<div class="card-body pt-0"> <div class="row"><div class="col-7">' +
-                    '<h2 class="lead"><b>Portfolio Baslik:' + portfolio.+'</b></h2>' +
-                    '<p class="text-muted text-sm"><b>Portfolio Sirket: </b> Şirket </p>' +
-                    '<p class="text-muted text-sm"><b>Portfolio Bitis Tarihi: </b> Tarihi </p>' +
-                    '<p class="text-muted text-sm"><b>Portfolio Kullanılan Teknoloji: </b> Teknoloji </p>' +
-                    '<p class="text-muted text-sm"><b>Portfolio Link : </b> Link </p>' +
-                    '</div><div class="col-5 text-center"><img src="/adminlte/dist/img/user1-128x128.jpg" alt="user-avatar" class="img-circle img-fluid"></div></div></div>' +
+                    '<h2 class="lead"><b>Portfolio Baslik:' + portData.pTitle+'</b></h2>' +
+                    '<p class="text-muted text-sm"><b>Portfolio Sirket: </b> ' + portData.pFactoryName +' </p>' +
+                    '<p class="text-muted text-sm"><b>Portfolio Bitis Tarihi: </b> ' + portData.pDeliveryDate +' </p>' +
+                    '<p class="text-muted text-sm"><b>Portfolio Kullanılan Teknoloji: </b> ' + portData.pUseService +' </p>' +
+                    '<p class="text-muted text-sm"><b>Portfolio Link : </b> ' + portData.pLink +' </p>' +
+                    '</div><div class="col-5 text-center"><img src="' + portData.pImage +'" alt="user-avatar" class="img-circle img-fluid"></div></div></div>' +
 
                     '<div class="card-footer">' +
                     '<div class="text-right">' +
                     '<div class="btn-group">' +
-                    '<button type="button" class="btn btn-sm btn-warning" onclick="editPCategory(' + portfolio.pCategoryID + ')">' +
+
+                    '<button type="button" class="btn btn-sm btn-info" onclick="viewPort(' + portData.pid + ')">' +
+                    '<i class="fas fa-eye"></i> Görüntüle' +
+                    '</button>' +
+                    '<button type="button" class="btn btn-sm btn-warning" onclick="editPort(' + portData.pid + ')">' +
                     '<i class="fas fa-edit"></i> Düzenle' +
                     '</button>' +
-                    '<button type="button" class="btn btn-sm btn-danger" onclick="deletePCategory(' + portfolio.pType + ')">' +
+                    '<button type="button" class="btn btn-sm btn-danger" onclick="deletePort(' + portData.pid + ')">' +
                     '<i class="fas fa-trash"></i> Sil' +
-                    '</a>' +
+                    '</button>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +
